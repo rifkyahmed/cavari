@@ -1,0 +1,53 @@
+# Security Enhancement Plan
+
+## Goal
+Strengthen authentication security to protect user data while maintaining a smooth, premium user experience ("invisible security").
+
+## Current Status Analysis
+- **Rating**: 8.5/10 (Strong Foundation)
+- **Existing Protections**:
+  - CSRF Protection (Standard Laravel)
+  - Rate Limiting (5 attempts per minute)
+  - Session Fixation protection
+  - Bcrypt Hashing
+  - Secure/HttpOnly Cookies
+
+## User Review Required
+> [!NOTE]
+> We are interpreting "complicated" as "Strict Security" for attackers, but we aim to keep it Simple for legitimate users.
+
+## Proposed Changes
+
+### 1. Invisible Bot Protection (Honeypot)
+Add an invisible input field to the Login/Register forms. Bots fill it out; humans don't. If filled, the request is rejected.
+- **Impact**: zero friction for users, stops 90% of automated bots.
+
+### 2. Strengthen Password Policy
+Update `AppServiceProvider` to enforce stricter password rules globally.
+- **Rule**: Minimum 10 characters, at least one number and symbol.
+- **Impact**: Slightly harder cleanup, ensures stronger accounts.
+
+### 3. Login Notification
+Send an email "New Login Detected" if the IP address changes.
+- **Impact**: High visibility for account takeover attempts.
+
+### 4. Recaptcha v3 (Optional)
+If bot attacks persist, we can add Google Recaptcha v3 which scores users without making them click cars/traffic lights.
+
+#### [MODIFY] [AppServiceProvider.php](file:///c:/xampp/htdocs/cavari/app/Providers/AppServiceProvider.php)
+- Define default password rules: `min(10)->letters()->numbers()->symbols()`
+
+#### [MODIFY] [auth-modal.blade.php](file:///c:/xampp/htdocs/cavari/resources/views/components/auth-modal.blade.php)
+- Add honeypot hidden field `gotcha`.
+
+#### [MODIFY] [RegisteredUserController.php](file:///c:/xampp/htdocs/cavari/app/Http/Controllers/Auth/RegisteredUserController.php)
+- Add honeypot validation check before creating user.
+
+#### [MODIFY] [AuthenticatedSessionController.php](file:///c:/xampp/htdocs/cavari/app/Http/Controllers/Auth/AuthenticatedSessionController.php)
+- Add honeypot validation check.
+
+## Verification Plan
+### Automated Tests
+- Attempt to register with weak password -> Expect Failure.
+- Attempt to register/login with `gotcha` field filled -> Expect Failure.
+- Attempt normal login -> Expect Success.

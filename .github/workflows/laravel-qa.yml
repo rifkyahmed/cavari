@@ -1,0 +1,79 @@
+name: Laravel E2E QA Testing
+
+on:
+  push:
+    branches: [ "main", "dev" ]
+  pull_request:
+    branches: [ "main", "dev" ]
+
+jobs:
+  laravel-qa-tests:
+
+    runs-on: ubuntu-latest
+
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ALLOW_EMPTY_PASSWORD: yes
+          MYSQL_DATABASE: cavari_testing
+        ports:
+          - 3306:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '8.2'
+        extensions: mbstring, xml, ctype, iconv, intl, pdo, pdo_mysql, dom, filter, gd, iconv, json, libxml, zlib, zip
+        coverage: none
+
+    - name: Install Node Dependencies
+      run: npm ci
+
+    - name: Install Composer Dependencies
+      run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
+
+    - name: Generate key
+      run: php artisan key:generate
+
+    - name: Build frontend assets
+      run: npm run build
+
+    - name: Directory Permissions
+      run: chmod -R 777 storage bootstrap/cache
+
+    - name: Create Test Environment File
+      run: cp .env.testing .env
+
+    - name: Execute Database Migrations for Testing
+      run: php artisan migrate:fresh --seed
+
+    - name: Run PHPUnit Feature Tests
+      run: php artisan test
+
+    - name: Upgrade Chrome Driver
+      run: php artisan dusk:chrome-driver
+
+    - name: Run Laravel Dusk Browser Tests
+      run: |
+        php artisan serve --host=127.0.0.1 --port=8000 &
+        sleep 5
+        php artisan dusk
+      env:
+        APP_URL: http://127.0.0.1:8000
+        DB_HOST: 127.0.0.1
+        DB_PORT: 3306
+
+    - name: Upload Test Artifacts (Screenshots & Logs)
+      if: failure()
+      uses: actions/upload-artifact@v4
+      with:
+        name: dusk-failure-artifacts
+        path: |
+          tests/Browser/screenshots
+          tests/Browser/console
+          storage/logs

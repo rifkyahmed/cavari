@@ -1,0 +1,14 @@
+User-agent: *
+Disallow: /admin/
+Disallow: /checkout/
+Disallow: /cart/
+Disallow: /auth/
+Disallow: /*?search=*
+Disallow: /*?sort=*
+
+Allow: /
+Allow: /api/
+Allow: /products/
+Allow: /images/
+
+Sitemap: https://cavari.com/sitemap.xml
