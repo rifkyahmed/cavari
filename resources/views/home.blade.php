@@ -1098,29 +1098,24 @@
                     gsap.registerPlugin(ScrollTrigger);
 
                     // --- 0. Smooth Scroll (Lenis) Initialization ---
-                    const isMobile = window.innerWidth < 1024 || ('ontouchstart' in window);
-                    let lenis = null;
+                    const lenis = new Lenis({
+                        duration: 1.2,
+                        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+                        smoothWheel: true
+                    });
 
-                    if (!isMobile) {
-                        lenis = new Lenis({
-                            duration: 1.2,
-                            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-                            smoothWheel: true
-                        });
-
-                        function raf(time) {
-                            lenis.raf(time);
-                            requestAnimationFrame(raf);
-                        }
+                    function raf(time) {
+                        lenis.raf(time);
                         requestAnimationFrame(raf);
-
-                        // Sync ScrollTrigger with Lenis
-                        lenis.on('scroll', ScrollTrigger.update);
-                        gsap.ticker.add((time) => {
-                            lenis.raf(time * 1000);
-                        });
-                        gsap.ticker.lagSmoothing(0);
                     }
+                    requestAnimationFrame(raf);
+
+                    // Sync ScrollTrigger with Lenis
+                    lenis.on('scroll', ScrollTrigger.update);
+                    gsap.ticker.add((time) => {
+                        lenis.raf(time * 1000);
+                    });
+                    gsap.ticker.lagSmoothing(0);
 
                     // 3. The Atelier Horizontal Scroll (Pin & Translate)
                     const atelierTrack = document.getElementById('atelier-track');
@@ -1180,46 +1175,17 @@
 
                             // Mobile/Tablet Adjustment: Move the gem a bit higher when it lands in the About section
                             if (window.innerWidth < 1024) {
-                                endY -= 60; // Shift up by 60px on mobile/tablet
-                            }
+                            if (window.innerWidth < 1024) endY -= 60;
 
-                            // Calculate scale to fit inside placeholder properly
                             let targetSize = Math.min(aboutRect.width, aboutRect.height);
                             let scale = targetSize / gemRect.width;
 
-                            // Master Animation State
-                            let state = {
-                                target: 0,
-                                current: 0,
-                                lerp: window.innerWidth < 1024 ? 0.08 : 0.05 // Smoothing factor
-                            };
-
-                            // Independent Rendering Loop (Apple-style)
-                            gsap.ticker.add(() => {
-                                // Smoothly move current towards target
-                                state.current += (state.target - state.current) * state.lerp;
-
-                                const p = state.current;
-
-                                // 1. Handle Auto-Rotate
-                                const isTransitioning = p > 0.01 && p < 0.99;
-                                if (isTransitioning) {
-                                    if (gem3d.autoRotate) gem3d.autoRotate = false;
-                                } else {
-                                    if (!gem3d.autoRotate) gem3d.autoRotate = true;
-                                }
-
-                                // 2. Update Structural Position
-                                // We use direct style updates for maximum performance in a loop
-                                const x = endX * p;
-                                const y = endY * p;
-                                const s = 1 + (scale - 1) * p;
-                                gem3d.style.transform = `translate(${x}px, ${y}px) scale(${s})`;
-
-                                // 3. Internal Camera Rotation (Only if change is significant)
-                                let theta = 42 * p;
-                                let phi = 85 + (52 - 85) * p;
-                                gem3d.cameraOrbit = `${theta}deg ${phi}deg auto`;
+                            transferTween = gsap.to(gem3d, {
+                                x: endX,
+                                y: endY,
+                                scale: scale,
+                                ease: "power1.inOut",
+                                paused: true
                             });
 
                             ScrollTrigger.create({
@@ -1227,9 +1193,20 @@
                                 start: "top top",
                                 endTrigger: aboutPlaceholder,
                                 end: "center center",
-                                scrub: true, // Scrub only updates the target value
+                                scrub: window.innerWidth < 1024 ? 1.5 : 2.5,
+                                animation: transferTween,
                                 onUpdate: (self) => {
-                                    state.target = self.progress;
+                                    const p = self.progress;
+                                    const isTransitioning = p > 0.01 && p < 0.99;
+                                    if (isTransitioning) {
+                                        if (gem3d.autoRotate) gem3d.autoRotate = false;
+                                    } else {
+                                        if (!gem3d.autoRotate) gem3d.autoRotate = true;
+                                    }
+
+                                    let theta = gsap.utils.interpolate(0, 42, p);
+                                    let phi = gsap.utils.interpolate(85, 52, p);
+                                    gem3d.cameraOrbit = `${theta}deg ${phi}deg auto`;
                                 }
                             });
                         }
