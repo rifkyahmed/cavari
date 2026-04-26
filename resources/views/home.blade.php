@@ -349,7 +349,8 @@
 
             <model-viewer id="main-3d-gem" src="{{ asset('images/perfect_ruby.glb') }}" alt="3D Rare Gemstone"
                 disable-zoom camera-orbit="0deg 85deg auto" field-of-view="28deg" environment-image="neutral"
-                tone-mapping="aces" exposure="1.2" shadow-intensity="2" shadow-softness="1" loading="eager" auto-rotate
+                tone-mapping="aces" exposure="1.2" shadow-intensity="1" shadow-softness="1" loading="lazy" 
+                power-preference="high-performance" auto-rotate
                 rotation-per-second="3deg" interaction-prompt="none" auto-rotate-delay="0"
                 class="w-[415px] h-[415px] max-w-[85vw] sm:w-[55vw] sm:h-[55vw] md:w-[40vw] md:h-[40vw] lg:w-[40vw] lg:h-[40vw] object-contain drop-shadow-2xl cursor-default pointer-events-none"
                 style="--poster-color: transparent;">
@@ -1084,10 +1085,12 @@
                     gsap.registerPlugin(ScrollTrigger);
 
                     // --- 0. Smooth Scroll (Lenis) Initialization ---
+                    const isMobile = window.innerWidth < 1024;
                     const lenis = new Lenis({
-                        duration: 1.2,
+                        duration: isMobile ? 1.0 : 1.2,
                         easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-                        smoothWheel: true
+                        smoothWheel: true,
+                        touchMultiplier: 1.5,
                     });
 
                     function raf(time) {
@@ -1182,7 +1185,7 @@
                                 start: "top top",
                                 endTrigger: aboutPlaceholder,
                                 end: "center center",
-                                scrub: 2.5, // Smooth glide
+                                scrub: window.innerWidth < 1024 ? 1 : 2.5, // Faster catch-up on mobile
                                 animation: transferTween,
                                 onUpdate: (self) => {
                                     // Rotate at the top or bottom, but stop during the transition
