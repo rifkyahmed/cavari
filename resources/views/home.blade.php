@@ -169,43 +169,27 @@
             }
         }
 
-        /* Laptop (1024px and up) */
-        @media (min-width: 1024px) {
-            .about-heading {
-                font-size: clamp(3.5rem, 8vw, 5.5rem);
-                margin-left: 0;
-                text-align: left;
-            }
-            #about-gem-placeholder {
-                transform: translateY(1.5rem);
-            }
-        }
-
-        /* Desktop (1440px and up) - Removed negative margins to maintain alignment */
+        /* Desktop (1440px and up) */
         @media (min-width: 1440px) {
             .about-heading {
                 font-size: clamp(4rem, 7vw, 6rem);
-                margin-left: 0;
+                margin-left: -2rem;
             }
         }
 
         /* Large Desktop (1920px and up) */
         @media (min-width: 1920px) {
-            .about-heading, .about-indented-box, .about-tagline {
-                margin-left: 4rem;
-            }
-            #about-gem-placeholder {
-                transform: translate(-12rem, 1.5rem);
+            .about-heading {
+                font-size: clamp(4rem, 8vw, 6.5rem);
+                margin-left: -3rem;
             }
         }
 
-        /* Large Desktop (2560px and up) */
+        /* Large Desktop (2560px and up) - PERFECT LAYOUT */
         @media (min-width: 2560px) {
-            .about-heading, .about-indented-box, .about-tagline {
-                margin-left: 8rem;
-            }
-            #about-gem-placeholder {
-                transform: translate(-18rem, 1.5rem);
+            .about-heading {
+                font-size: clamp(4rem, 9vw, 7rem);
+                margin-left: -5rem;
             }
         }
 
@@ -217,19 +201,19 @@
 
         @media (min-width: 1440px) {
             .about-tagline {
-                margin-left: 0;
+                margin-left: -2rem;
             }
         }
 
         @media (min-width: 1920px) {
             .about-tagline {
-                margin-left: 0;
+                margin-left: -3rem;
             }
         }
 
         @media (min-width: 2560px) {
             .about-tagline {
-                margin-left: 0;
+                margin-left: -5rem;
             }
         }
 
@@ -479,13 +463,13 @@
     <!-- About Section -->
     <section class="relative w-full pt-8 pb-0 md:pt-16 md:pb-16 lg:pt-24 lg:pb-36 bg-transparent overflow-hidden">
 
-        <div class="mx-3 sm:mx-6 md:mx-8 px-3 sm:px-6 md:px-20 lg:px-24">
+        <div class="max-w-7xl mx-auto px-6">
 
             <!-- Main Content Flex Container -->
             <div class="flex flex-col lg:flex-row items-center lg:items-center justify-between gap-12 lg:gap-20">
 
                 <!-- Left Column: Text Content -->
-                <div class="w-full lg:w-1/2 relative z-10">
+                <div class="w-full lg:w-3/5 relative z-10 lg:-ml-12">
 
                     <!-- Main Heading -->
                     <h2 class="about-heading">
@@ -496,7 +480,7 @@
 
                     <!-- Indented Paragraph with Vertical Line -->
                     <div
-                        class="mt-8 ml-4 md:ml-0 lg:ml-0 max-w-xl lg:max-w-2xl about-indented-box">
+                        class="mt-8 ml-4 md:ml-0 lg:ml-0 border-l border-black pl-8 lg:pl-12 max-w-xl lg:max-w-2xl about-indented-box">
                         <p
                             class="font-space-mono text-[11px] sm:text-[12px] md:text-[13px] leading-loose tracking-wide text-black text-justify uppercase">
                             Born from the legendary gem lands of Sri Lanka, <span class="font-bold">CAVARi</span> offers
@@ -519,7 +503,7 @@
                 </div>
 
                 <!-- Right Column: Gemstone Image Placeholder -->
-                <div class="w-full lg:w-1/2 flex items-center justify-center lg:justify-start">
+                <div class="w-full lg:w-1/2 flex items-center justify-center lg:justify-end lg:translate-x-16">
                     <div id="about-gem-placeholder"
                         class="relative w-full max-w-lg lg:max-w-2xl h-[400px] md:h-[500px] lg:h-[600px] flex items-center justify-center">
                         <!-- The 3D gem will dynamically move into this container on scroll -->
