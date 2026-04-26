@@ -359,18 +359,12 @@
                 class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-pink-300/20 blur-[120px] rounded-full pointer-events-none -z-10 hero-glow">
             </div>
 
-            <!-- Static Fallback Image for Mobile (Performance Booster) -->
-            <div class="lg:hidden absolute inset-0 flex items-center justify-center pointer-events-none z-20">
-                <img src="{{ asset('images/ultra_ruby.glb') }}" alt="Rare Ruby"
-                    class="w-[320px] h-[320px] object-contain drop-shadow-2xl animate-float-gem">
-            </div>
-
             <model-viewer id="main-3d-gem" src="{{ asset('images/perfect_ruby.glb') }}" alt="3D Rare Gemstone"
                 disable-zoom camera-orbit="0deg 85deg auto" field-of-view="28deg" environment-image="neutral"
                 tone-mapping="aces" exposure="1.2" shadow-intensity="0.5" shadow-softness="0.5" loading="lazy"
-                reveal="manual" power-preference="high-performance" minimum-render-scale="0.5" auto-rotate
+                power-preference="high-performance" minimum-render-scale="0.5" auto-rotate
                 rotation-per-second="3deg" interaction-prompt="none" auto-rotate-delay="0"
-                class="hidden lg:block w-[415px] h-[415px] max-w-[85vw] sm:w-[55vw] sm:h-[55vw] md:w-[40vw] md:h-[40vw] lg:w-[40vw] lg:h-[40vw] object-contain drop-shadow-2xl cursor-default pointer-events-none will-change-transform"
+                class="w-[415px] h-[415px] max-w-[85vw] sm:w-[55vw] sm:h-[55vw] md:w-[40vw] md:h-[40vw] lg:w-[40vw] lg:h-[40vw] object-contain drop-shadow-2xl cursor-default pointer-events-none will-change-transform"
                 style="--poster-color: transparent;">
             </model-viewer>
         </div>
