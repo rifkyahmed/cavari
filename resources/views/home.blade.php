@@ -1181,6 +1181,12 @@
                             }
 
                             let targetSize = Math.min(aboutRect.width, aboutRect.height);
+                            
+                            // On Desktop, keep the gem exactly the same size as the Hero section
+                            if (window.innerWidth >= 1024) {
+                                targetSize = gemRect.width;
+                            }
+                            
                             let scale = targetSize / gemRect.width;
 
                             transferTween = gsap.to(gem3d, {
