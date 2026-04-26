@@ -320,7 +320,7 @@
                 filter: blur(40px) !important;
                 -webkit-filter: blur(40px) !important;
                 opacity: 0.5 !important;
-                background: #ffb6c1 !important; 
+                background: #ffb6c1 !important;
                 border-radius: 50%;
             }
         }
@@ -352,7 +352,8 @@
         </div>
 
         <!-- Central 3D Gemstone -->
-        <div class="relative z-50 w-full max-w-4xl flex justify-center px-4 mt-2 md:mt-3 min-h-[350px] lg:min-h-0" id="hero-gem-container">
+        <div class="relative z-50 w-full max-w-4xl flex justify-center px-4 mt-2 md:mt-3 min-h-[350px] lg:min-h-0"
+            id="hero-gem-container">
             <!-- Luxury Pink Glow Behind Gem -->
             <div
                 class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-pink-300/20 blur-[120px] rounded-full pointer-events-none -z-10 hero-glow">
@@ -360,13 +361,13 @@
 
             <!-- Static Fallback Image for Mobile (Performance Booster) -->
             <div class="lg:hidden absolute inset-0 flex items-center justify-center pointer-events-none z-20">
-                <img src="{{ asset('images/ruby.png') }}" alt="Rare Ruby" 
-                     class="w-[320px] h-[320px] object-contain drop-shadow-2xl animate-float-gem">
+                <img src="{{ asset('images/real_ruby.glb') }}" alt="Rare Ruby"
+                    class="w-[320px] h-[320px] object-contain drop-shadow-2xl animate-float-gem">
             </div>
 
             <model-viewer id="main-3d-gem" src="{{ asset('images/perfect_ruby.glb') }}" alt="3D Rare Gemstone"
                 disable-zoom camera-orbit="0deg 85deg auto" field-of-view="28deg" environment-image="neutral"
-                tone-mapping="aces" exposure="1.2" shadow-intensity="0.5" shadow-softness="0.5" loading="lazy" 
+                tone-mapping="aces" exposure="1.2" shadow-intensity="0.5" shadow-softness="0.5" loading="lazy"
                 reveal="manual" power-preference="high-performance" minimum-render-scale="0.5" auto-rotate
                 rotation-per-second="3deg" interaction-prompt="none" auto-rotate-delay="0"
                 class="hidden lg:block w-[415px] h-[415px] max-w-[85vw] sm:w-[55vw] sm:h-[55vw] md:w-[40vw] md:h-[40vw] lg:w-[40vw] lg:h-[40vw] object-contain drop-shadow-2xl cursor-default pointer-events-none will-change-transform"
@@ -1052,7 +1053,8 @@
 
                 <!-- Floating Image -->
                 <div class="w-full lg:w-5/12 mt-12 lg:mt-0 relative z-10 lg:-ml-24">
-                    <div class="relative overflow-hidden grayscale hover:grayscale-0 transition-all duration-1000 shadow-2xl h-[400px] lg:h-[600px]">
+                    <div
+                        class="relative overflow-hidden grayscale hover:grayscale-0 transition-all duration-1000 shadow-2xl h-[400px] lg:h-[600px]">
                         <img src="{{ asset('images/journey-craft.png') }}" loading="lazy"
                             class="w-full h-full object-cover transform scale-110 hover:scale-100 transition-transform duration-[2s]"
                             alt="Artisan Jeweler Hands Crafting Cavari Jewelry">
@@ -1202,9 +1204,9 @@
                             gsap.ticker.add(() => {
                                 // Smoothly move current towards target
                                 state.current += (state.target - state.current) * state.lerp;
-                                
+
                                 const p = state.current;
-                                
+
                                 // 1. Handle Auto-Rotate
                                 const isTransitioning = p > 0.01 && p < 0.99;
                                 if (isTransitioning) {
