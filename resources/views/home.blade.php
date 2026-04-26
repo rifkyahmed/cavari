@@ -358,12 +358,18 @@
                 class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-pink-300/20 blur-[120px] rounded-full pointer-events-none -z-10 hero-glow">
             </div>
 
+            <!-- Static Fallback Image for Mobile (Performance Booster) -->
+            <div class="lg:hidden absolute inset-0 flex items-center justify-center pointer-events-none z-20">
+                <img src="{{ asset('images/perfect_ruby.png') }}" alt="Rare Ruby" 
+                     class="w-[320px] h-[320px] object-contain drop-shadow-2xl animate-float-gem">
+            </div>
+
             <model-viewer id="main-3d-gem" src="{{ asset('images/perfect_ruby.glb') }}" alt="3D Rare Gemstone"
                 disable-zoom camera-orbit="0deg 85deg auto" field-of-view="28deg" environment-image="neutral"
                 tone-mapping="aces" exposure="1.2" shadow-intensity="0.5" shadow-softness="0.5" loading="lazy" 
-                power-preference="high-performance" minimum-render-scale="0.5" auto-rotate
+                reveal="manual" power-preference="high-performance" minimum-render-scale="0.5" auto-rotate
                 rotation-per-second="3deg" interaction-prompt="none" auto-rotate-delay="0"
-                class="w-[415px] h-[415px] max-w-[85vw] sm:w-[55vw] sm:h-[55vw] md:w-[40vw] md:h-[40vw] lg:w-[40vw] lg:h-[40vw] object-contain drop-shadow-2xl cursor-default pointer-events-none will-change-transform"
+                class="hidden lg:block w-[415px] h-[415px] max-w-[85vw] sm:w-[55vw] sm:h-[55vw] md:w-[40vw] md:h-[40vw] lg:w-[40vw] lg:h-[40vw] object-contain drop-shadow-2xl cursor-default pointer-events-none will-change-transform"
                 style="--poster-color: transparent;">
             </model-viewer>
         </div>
@@ -1097,26 +1103,28 @@
 
                     // --- 0. Smooth Scroll (Lenis) Initialization ---
                     const isMobile = window.innerWidth < 1024 || ('ontouchstart' in window);
-                    const lenis = new Lenis({
-                        duration: 1.2,
-                        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-                        smoothWheel: true,
-                        touchMultiplier: 2, // More responsive touch
-                        infinite: false
-                    });
+                    let lenis = null;
 
-                    function raf(time) {
-                        lenis.raf(time);
+                    if (!isMobile) {
+                        lenis = new Lenis({
+                            duration: 1.2,
+                            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+                            smoothWheel: true
+                        });
+
+                        function raf(time) {
+                            lenis.raf(time);
+                            requestAnimationFrame(raf);
+                        }
                         requestAnimationFrame(raf);
-                    }
-                    requestAnimationFrame(raf);
 
-                    // Sync ScrollTrigger with Lenis
-                    lenis.on('scroll', ScrollTrigger.update);
-                    gsap.ticker.add((time) => {
-                        lenis.raf(time * 1000);
-                    });
-                    gsap.ticker.lagSmoothing(0);
+                        // Sync ScrollTrigger with Lenis
+                        lenis.on('scroll', ScrollTrigger.update);
+                        gsap.ticker.add((time) => {
+                            lenis.raf(time * 1000);
+                        });
+                        gsap.ticker.lagSmoothing(0);
+                    }
 
                     // 3. The Atelier Horizontal Scroll (Pin & Translate)
                     const atelierTrack = document.getElementById('atelier-track');
