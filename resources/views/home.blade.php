@@ -1175,7 +1175,8 @@
 
                             // Mobile/Tablet Adjustment: Move the gem a bit higher when it lands in the About section
                             if (window.innerWidth < 1024) {
-                            if (window.innerWidth < 1024) endY -= 60;
+                                endY -= 60;
+                            }
 
                             let targetSize = Math.min(aboutRect.width, aboutRect.height);
                             let scale = targetSize / gemRect.width;
