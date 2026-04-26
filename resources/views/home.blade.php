@@ -1182,19 +1182,21 @@
                             let targetSize = Math.min(aboutRect.width, aboutRect.height);
                             let scale = targetSize / gemRect.width;
 
-                            // Proxy object for "Double-Smoothing" the camera orbit
-                            const orbitProxy = { theta: 0, phi: 85 };
-                            
-                            transferTween = gsap.to(gem3d, {
-                                x: endX,
-                                y: endY,
-                                scale: scale,
-                                ease: "none", 
-                                paused: true,
-                                onUpdate: function() {
-                                    const p = this.progress();
+                            // Use quickTo for the highest possible performance
+                            const xTo = gsap.quickTo(gem3d, "x", {duration: 0.6, ease: "power2.out"});
+                            const yTo = gsap.quickTo(gem3d, "y", {duration: 0.6, ease: "power2.out"});
+                            const scaleTo = gsap.quickTo(gem3d, "scale", {duration: 0.6, ease: "power2.out"});
+
+                            ScrollTrigger.create({
+                                trigger: heroContainer,
+                                start: "top top",
+                                endTrigger: aboutPlaceholder,
+                                end: "center center",
+                                scrub: window.innerWidth < 1024 ? 1 : 2.5,
+                                onUpdate: (self) => {
+                                    const p = self.progress;
                                     
-                                    // Handle Auto-Rotate state
+                                    // Handle Auto-Rotate
                                     const isTransitioning = p > 0.01 && p < 0.99;
                                     if (isTransitioning) {
                                         if (gem3d.autoRotate) gem3d.autoRotate = false;
@@ -1202,32 +1204,16 @@
                                         if (!gem3d.autoRotate) gem3d.autoRotate = true;
                                     }
 
-                                    // Calculate target angles
-                                    let targetTheta = gsap.utils.interpolate(0, 42, p);
-                                    let targetPhi = gsap.utils.interpolate(85, 52, p);
+                                    // Direct structural movement updates
+                                    xTo(endX * p);
+                                    yTo(endY * p);
+                                    scaleTo(1 + (scale - 1) * p);
 
-                                    // "Double-Smoothing": Animate the proxy to the target, then apply to gem
-                                    // This creates a silky smooth feel even during fast scrolls
-                                    gsap.to(orbitProxy, {
-                                        theta: targetTheta,
-                                        phi: targetPhi,
-                                        duration: 0.4, // Small smoothing window
-                                        ease: "power1.out",
-                                        overwrite: "auto",
-                                        onUpdate: () => {
-                                            gem3d.cameraOrbit = `${orbitProxy.theta}deg ${orbitProxy.phi}deg auto`;
-                                        }
-                                    });
+                                    // Internal camera rotation (Throttled)
+                                    let theta = gsap.utils.interpolate(0, 42, p);
+                                    let phi = gsap.utils.interpolate(85, 52, p);
+                                    gem3d.cameraOrbit = `${theta}deg ${phi}deg auto`;
                                 }
-                            });
-
-                            ScrollTrigger.create({
-                                trigger: heroContainer,
-                                start: "top top",
-                                endTrigger: aboutPlaceholder,
-                                end: "center center",
-                                scrub: window.innerWidth < 1024 ? 1.2 : 2.5, 
-                                animation: transferTween
                             });
                         }
 
