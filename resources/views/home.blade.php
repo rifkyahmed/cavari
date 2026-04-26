@@ -313,6 +313,14 @@
         model-viewer::part(default-progress-mask) {
             display: none !important;
         }
+
+        /* Optimize blurs for mobile */
+        @media (max-width: 1024px) {
+            .hero-glow {
+                blur: 40px !important;
+                opacity: 0.15 !important;
+            }
+        }
     </style>
 
     <!-- Model Viewer for 3D Gem -->
@@ -344,13 +352,13 @@
         <div class="relative z-50 w-full max-w-4xl flex justify-center px-4 mt-2 md:mt-3" id="hero-gem-container">
             <!-- Luxury Pink Glow Behind Gem -->
             <div
-                class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-pink-300/20 blur-[120px] rounded-full pointer-events-none -z-10">
+                class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-pink-300/20 blur-[120px] rounded-full pointer-events-none -z-10 hero-glow">
             </div>
 
             <model-viewer id="main-3d-gem" src="{{ asset('images/perfect_ruby.glb') }}" alt="3D Rare Gemstone"
                 disable-zoom camera-orbit="0deg 85deg auto" field-of-view="28deg" environment-image="neutral"
-                tone-mapping="aces" exposure="1.2" shadow-intensity="1" shadow-softness="1" loading="lazy" 
-                power-preference="high-performance" auto-rotate
+                tone-mapping="aces" exposure="1.2" shadow-intensity="0.5" shadow-softness="0.5" loading="lazy" 
+                power-preference="high-performance" minimum-render-scale="0.5" auto-rotate
                 rotation-per-second="3deg" interaction-prompt="none" auto-rotate-delay="0"
                 class="w-[415px] h-[415px] max-w-[85vw] sm:w-[55vw] sm:h-[55vw] md:w-[40vw] md:h-[40vw] lg:w-[40vw] lg:h-[40vw] object-contain drop-shadow-2xl cursor-default pointer-events-none"
                 style="--poster-color: transparent;">
@@ -1085,26 +1093,29 @@
                     gsap.registerPlugin(ScrollTrigger);
 
                     // --- 0. Smooth Scroll (Lenis) Initialization ---
-                    const isMobile = window.innerWidth < 1024;
-                    const lenis = new Lenis({
-                        duration: isMobile ? 1.0 : 1.2,
-                        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-                        smoothWheel: true,
-                        touchMultiplier: 1.5,
-                    });
+                    const isMobile = window.innerWidth < 1024 || ('ontouchstart' in window);
+                    let lenis = null;
 
-                    function raf(time) {
-                        lenis.raf(time);
+                    if (!isMobile) {
+                        lenis = new Lenis({
+                            duration: 1.2,
+                            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+                            smoothWheel: true
+                        });
+
+                        function raf(time) {
+                            lenis.raf(time);
+                            requestAnimationFrame(raf);
+                        }
                         requestAnimationFrame(raf);
-                    }
-                    requestAnimationFrame(raf);
 
-                    // Sync ScrollTrigger with Lenis
-                    lenis.on('scroll', ScrollTrigger.update);
-                    gsap.ticker.add((time) => {
-                        lenis.raf(time * 1000);
-                    });
-                    gsap.ticker.lagSmoothing(0);
+                        // Sync ScrollTrigger with Lenis
+                        lenis.on('scroll', ScrollTrigger.update);
+                        gsap.ticker.add((time) => {
+                            lenis.raf(time * 1000);
+                        });
+                        gsap.ticker.lagSmoothing(0);
+                    }
 
                     // 3. The Atelier Horizontal Scroll (Pin & Translate)
                     const atelierTrack = document.getElementById('atelier-track');
@@ -1207,7 +1218,11 @@
 
                                         let theta = gsap.utils.interpolate(startTheta, endTheta, self.progress);
                                         let phi = gsap.utils.interpolate(startPhi, endPhi, self.progress);
-                                        gem3d.cameraOrbit = `${theta}deg ${phi}deg auto`;
+                                        
+                                        // Only animate camera orbit on desktop to save mobile GPU
+                                        if (!isMobileOrTablet) {
+                                            gem3d.cameraOrbit = `${theta}deg ${phi}deg auto`;
+                                        }
                                     }
                                 }
                             });
