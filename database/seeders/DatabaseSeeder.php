@@ -16,20 +16,24 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         // Admin User
-        User::create([
-            'name' => 'Admin User',
-            'email' => 'admin@example.com',
-            'password' => bcrypt('password'),
-            'role' => 'admin'
-        ]);
+        User::updateOrCreate(
+            ['email' => 'admin@example.com'],
+            [
+                'name' => 'Admin User',
+                'password' => bcrypt('password'),
+                'role' => 'admin'
+            ]
+        );
 
         // Customer
-        User::create([
-            'name' => 'John Doe',
-            'email' => 'john@example.com',
-            'password' => bcrypt('password'),
-            'role' => 'customer'
-        ]);
+        User::updateOrCreate(
+            ['email' => 'john@example.com'],
+            [
+                'name' => 'John Doe',
+                'password' => bcrypt('password'),
+                'role' => 'customer'
+            ]
+        );
 
         // Categories
         $categories = [
@@ -41,12 +45,14 @@ class DatabaseSeeder extends Seeder
         ];
 
         foreach ($categories as $cat) {
-            Category::create([
-                'name' => $cat['name'],
-                'slug' => Str::slug($cat['name']),
-                'description' => 'Beautiful ' . $cat['name'] . ' for every occasion.',
-                'image' => $cat['image']
-            ]);
+            Category::updateOrCreate(
+                ['slug' => Str::slug($cat['name'])],
+                [
+                    'name' => $cat['name'],
+                    'description' => 'Beautiful ' . $cat['name'] . ' for every occasion.',
+                    'image' => $cat['image']
+                ]
+            );
         }
 
         $ringCat = Category::where('slug', 'rings')->first();
@@ -56,42 +62,46 @@ class DatabaseSeeder extends Seeder
         $gemCat = Category::where('slug', 'loose-gems')->first();
 
         // 1. Rings
-        Product::create([
-            'category_id' => $ringCat->id,
-            'name' => 'Midnight Star',
-            'slug' => 'midnight-star-sapphire-ring',
-            'description' => 'A rare Ceylon blue sapphire set in a handcrafted platinum band. The deep blue hue captures the essence of the midnight sky.',
-            'price' => 8900.00,
-            'stock' => 5,
-            'gemstone_type' => 'Sapphire',
-            'images' => ['images/ring-1.png'],
-            'is_featured' => true,
-            'product_type' => 'jewelry',
-            'color' => 'Blue',
-            'weight' => 2.5,
-            'shape' => 'Oval',
-            'treatment' => 'Heated',
-            'metal' => 'Platinum',
-            'original_price' => 9500.00,
-        ]);
+        Product::updateOrCreate(
+            ['slug' => 'midnight-star-sapphire-ring'],
+            [
+                'category_id' => $ringCat->id,
+                'name' => 'Midnight Star',
+                'description' => 'A rare Ceylon blue sapphire set in a handcrafted platinum band. The deep blue hue captures the essence of the midnight sky.',
+                'price' => 8900.00,
+                'stock' => 5,
+                'gemstone_type' => 'Sapphire',
+                'images' => ['images/ring-1.png'],
+                'is_featured' => true,
+                'product_type' => 'jewelry',
+                'color' => 'Blue',
+                'weight' => 2.5,
+                'shape' => 'Oval',
+                'treatment' => 'Heated',
+                'metal' => 'Platinum',
+                'original_price' => 9500.00,
+            ]
+        );
 
-        Product::create([
-            'category_id' => $ringCat->id,
-            'name' => 'Crimson Vow',
-            'slug' => 'crimson-vow-ruby-ring',
-            'description' => 'An intense Burmese ruby ring, symbolizing passion and vitality. Surrounded by a halo of pave diamonds.',
-            'price' => 12500.00,
-            'stock' => 2,
-            'gemstone_type' => 'Ruby',
-            'images' => ['images/reviews-ring.png'], 
-            'is_featured' => true,
-            'product_type' => 'jewelry',
-            'color' => 'Red',
-            'weight' => 3.1,
-            'shape' => 'Cushion',
-            'treatment' => 'Unheated',
-            'metal' => 'Rose Gold',
-        ]);
+        Product::updateOrCreate(
+            ['slug' => 'crimson-vow-ruby-ring'],
+            [
+                'category_id' => $ringCat->id,
+                'name' => 'Crimson Vow',
+                'description' => 'An intense Burmese ruby ring, symbolizing passion and vitality. Surrounded by a halo of pave diamonds.',
+                'price' => 12500.00,
+                'stock' => 2,
+                'gemstone_type' => 'Ruby',
+                'images' => ['images/reviews-ring.png'], 
+                'is_featured' => true,
+                'product_type' => 'jewelry',
+                'color' => 'Red',
+                'weight' => 3.1,
+                'shape' => 'Cushion',
+                'treatment' => 'Unheated',
+                'metal' => 'Rose Gold',
+            ]
+        );
 
         // 2. Necklaces
         Product::create([

@@ -85,7 +85,7 @@
                         required>
                         <option value="">Select Main Category</option>
                         @foreach($categories as $mainCat)
-                            <option value="{{ $mainCat->id }}" data-type="{{ $mainCat->type }}">{{ $mainCat->name }}</option>
+                            <option value="{{ $mainCat->id }}" data-type="{{ $mainCat->type }}" {{ old('main_category_id') == $mainCat->id ? 'selected' : '' }}>{{ $mainCat->name }}</option>
                         @endforeach
                     </select>
                 </div>
@@ -732,6 +732,10 @@
 
                 const profitValueDisplay = document.getElementById('profit_value');
 
+                const dashboardGoldPrice = {{ $goldPrice ?? 0 }};
+                const allMainOptions = Array.from(mainCatSelect.options);
+
+
                 function roundUpToTen(value) {
                     return Math.ceil(value / 10) * 10;
                 }
@@ -846,7 +850,7 @@
 
 
                 // Filter main categories based on product type
-                function filterCategoriesByType() {
+                function filterCategoriesByType(initialLoad = false) {
                     const selectedType = productTypeSelect.value;
                     const currentMainId = mainCatSelect.value;
 
@@ -868,7 +872,7 @@
                         const stillExists = Array.from(mainCatSelect.options).some(o => o.value == currentMainId);
                         if (stillExists) {
                             mainCatSelect.value = currentMainId;
-                        } else {
+                        } else if (!initialLoad) {
                             mainCatSelect.value = "";
                             leafCatSelect.innerHTML = '<option value="">Select Sub Category</option>';
                             leafCatSelect.disabled = true;
@@ -876,8 +880,8 @@
                     }
                 }
 
-                mainCatSelect.addEventListener('change', function() {
-                    const mainId = this.value;
+                function populateSubCategories(selectedId = null) {
+                    const mainId = mainCatSelect.value;
                     const mainCat = categories.find(c => c.id == mainId);
 
                     // Populate Level 2 (Directly under Main)
@@ -889,12 +893,18 @@
                             const opt = document.createElement('option');
                             opt.value = child.id;
                             opt.textContent = child.name;
+                            if (selectedId && child.id == selectedId) {
+                                opt.selected = true;
+                            }
                             leafCatSelect.appendChild(opt);
                         });
                     } else {
                         leafCatSelect.disabled = true;
                     }
+                }
 
+                mainCatSelect.addEventListener('change', function() {
+                    populateSubCategories();
                     updateFieldVisibility();
                 });
 
@@ -916,7 +926,10 @@
                 });
 
                 // Initialize
-                filterCategoriesByType();
+                filterCategoriesByType(true);
+                if (mainCatSelect.value) {
+                    populateSubCategories("{{ old('category_id') }}");
+                }
                 updateFieldVisibility();
                 updateProfitDisplay();
             });
