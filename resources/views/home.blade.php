@@ -1118,9 +1118,6 @@
                             lenis.raf(time * 1000);
                         });
                         gsap.ticker.lagSmoothing(0);
-                    } else {
-                        // On Mobile, normalize scroll for stability
-                        ScrollTrigger.normalizeScroll(true);
                     }
 
                     // 3. The Atelier Horizontal Scroll (Pin & Translate)
