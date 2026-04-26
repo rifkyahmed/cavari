@@ -314,14 +314,12 @@
             display: none !important;
         }
 
-        /* Optimize blurs for mobile */
+        /* Restore soft glow for mobile */
         @media (max-width: 1024px) {
             .hero-glow {
-                filter: blur(40px) !important;
-                -webkit-filter: blur(40px) !important;
-                opacity: 0.5 !important;
-                background: #ffb6c1 !important;
-                border-radius: 50%;
+                filter: blur(80px) !important;
+                -webkit-filter: blur(80px) !important;
+                opacity: 0.35 !important;
             }
         }
     </style>
@@ -1098,24 +1096,32 @@
                     gsap.registerPlugin(ScrollTrigger);
 
                     // --- 0. Smooth Scroll (Lenis) Initialization ---
-                    const lenis = new Lenis({
-                        duration: 1.2,
-                        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-                        smoothWheel: true
-                    });
+                    const isTouch = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
+                    let lenis = null;
 
-                    function raf(time) {
-                        lenis.raf(time);
+                    if (!isTouch) {
+                        lenis = new Lenis({
+                            duration: 1.2,
+                            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+                            smoothWheel: true
+                        });
+
+                        function raf(time) {
+                            lenis.raf(time);
+                            requestAnimationFrame(raf);
+                        }
                         requestAnimationFrame(raf);
-                    }
-                    requestAnimationFrame(raf);
 
-                    // Sync ScrollTrigger with Lenis
-                    lenis.on('scroll', ScrollTrigger.update);
-                    gsap.ticker.add((time) => {
-                        lenis.raf(time * 1000);
-                    });
-                    gsap.ticker.lagSmoothing(0);
+                        // Sync ScrollTrigger with Lenis
+                        lenis.on('scroll', ScrollTrigger.update);
+                        gsap.ticker.add((time) => {
+                            lenis.raf(time * 1000);
+                        });
+                        gsap.ticker.lagSmoothing(0);
+                    } else {
+                        // On Mobile, normalize scroll for stability
+                        ScrollTrigger.normalizeScroll(true);
+                    }
 
                     // 3. The Atelier Horizontal Scroll (Pin & Translate)
                     const atelierTrack = document.getElementById('atelier-track');
@@ -1215,14 +1221,18 @@
                         // Short delay ensures layout is fully settled before calculating bounds
                         setTimeout(createGemTransferAnimation, 300);
 
-                        let resizeTimer;
+                        let lastWidth = window.innerWidth;
                         window.addEventListener('resize', () => {
-                            clearTimeout(resizeTimer);
-                            resizeTimer = setTimeout(() => {
-                                ScrollTrigger.getAll().forEach(t => t.kill());
-                                createGemTransferAnimation();
-                                initScrollEffects();
-                            }, 300);
+                            // Only refresh if the width changes (prevents address-bar jumps)
+                            if (window.innerWidth !== lastWidth) {
+                                lastWidth = window.innerWidth;
+                                clearTimeout(resizeTimer);
+                                resizeTimer = setTimeout(() => {
+                                    ScrollTrigger.getAll().forEach(t => t.kill());
+                                    createGemTransferAnimation();
+                                    initScrollEffects();
+                                }, 300);
+                            }
                         });
                     }
 
