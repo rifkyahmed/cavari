@@ -191,27 +191,21 @@
 
         /* Large Desktop (1920px and up) */
         @media (min-width: 1920px) {
-            .about-heading {
-                font-size: clamp(4rem, 8vw, 6.5rem);
-                margin-left: 0;
+            .about-heading, .about-indented-box, .about-tagline {
+                margin-left: 4rem;
             }
             #about-gem-placeholder {
-                transform: translate(-20rem, 1.5rem);
+                transform: translate(-12rem, 1.5rem);
             }
         }
 
         /* Large Desktop (2560px and up) */
         @media (min-width: 2560px) {
-            .about-container {
-                padding-left: 12rem !important;
-                padding-right: 12rem !important;
-            }
-            .about-heading {
-                font-size: clamp(4rem, 9vw, 7rem);
-                margin-left: 0;
+            .about-heading, .about-indented-box, .about-tagline {
+                margin-left: 8rem;
             }
             #about-gem-placeholder {
-                transform: translate(-15rem, 1.5rem);
+                transform: translate(-18rem, 1.5rem);
             }
         }
 
@@ -485,7 +479,7 @@
     <!-- About Section -->
     <section class="relative w-full pt-8 pb-0 md:pt-16 md:pb-16 lg:pt-24 lg:pb-36 bg-transparent overflow-hidden">
 
-        <div class="mx-3 sm:mx-6 md:mx-8 px-3 sm:px-6 md:px-20 lg:px-24 about-container">
+        <div class="mx-3 sm:mx-6 md:mx-8 px-3 sm:px-6 md:px-20 lg:px-24">
 
             <!-- Main Content Flex Container -->
             <div class="flex flex-col lg:flex-row items-center lg:items-center justify-between gap-12 lg:gap-20">
