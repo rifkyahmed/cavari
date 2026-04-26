@@ -1182,9 +1182,10 @@
 
                             let targetSize = Math.min(aboutRect.width, aboutRect.height);
                             
-                            // On Desktop, keep the gem exactly the same size as the Hero section
+                            // On Desktop, use a slightly larger multiplier to ensure it looks 
+                            // exactly as big as the hero gem (visual correction)
                             if (window.innerWidth >= 1024) {
-                                targetSize = gemRect.width;
+                                targetSize = gemRect.width * 1.15; 
                             }
                             
                             let scale = targetSize / gemRect.width;
