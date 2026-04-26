@@ -14,6 +14,8 @@
                 if ($mainImage) {
                     if (Str::startsWith($mainImage, ['http', 'https'])) {
                         $imageUrl = $mainImage;
+                    } elseif (Str::startsWith($mainImage, ['/storage/', 'storage/'])) {
+                        $imageUrl = asset($mainImage);
                     } elseif (Str::startsWith($mainImage, 'images/')) {
                         $imageUrl = asset($mainImage);
                     } else {
@@ -35,7 +37,8 @@
 
         <!-- Details Section -->
         <div class="p-8 md:p-12 flex flex-col h-full overflow-y-auto">
-            <h2 class="font-gloock text-3xl md:text-4xl text-black mb-2">{{ $product->name }}</h2>
+            <h2 class="font-gloock text-2xl md:text-3xl text-black mb-2">{{ $product->name }}</h2>
+
             
             <div class="flex items-center gap-4 mb-6">
                  <span class="font-instrument text-2xl font-medium">{{ \App\Helpers\CurrencyHelper::format($product->price) }}</span>

@@ -127,8 +127,8 @@
         /* Responsive Heading for 1050px */
         @media (max-width: 1050px) {
             .product-title {
-                font-size: 3rem !important;
-                /* Equivalent to text-5xl */
+                font-size: 2.25rem !important;
+                /* Equivalent to text-4xl */
             }
         }
     </style>
@@ -341,7 +341,7 @@
 
                 <!-- Header -->
                 <div class="border-b border-black/10 pb-10">
-                    <h1 class="font-gloock text-5xl md:text-6xl text-black leading-none mb-8 product-title">
+                    <h1 class="font-gloock text-4xl md:text-5xl text-black leading-none mb-8 product-title">
                         {{ $product->name }}
                     </h1>
 
