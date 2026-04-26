@@ -360,7 +360,7 @@
 
             <!-- Static Fallback Image for Mobile (Performance Booster) -->
             <div class="lg:hidden absolute inset-0 flex items-center justify-center pointer-events-none z-20">
-                <img src="{{ asset('images/perfect_ruby.png') }}" alt="Rare Ruby" 
+                <img src="{{ asset('images/ruby.png') }}" alt="Rare Ruby" 
                      class="w-[320px] h-[320px] object-contain drop-shadow-2xl animate-float-gem">
             </div>
 
