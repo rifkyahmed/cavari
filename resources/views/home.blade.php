@@ -350,14 +350,14 @@
         </div>
 
         <!-- Central 3D Gemstone -->
-        <div class="relative z-50 w-full max-w-4xl flex justify-center px-4 mt-2 md:mt-3 min-h-[450px] lg:min-h-0" id="hero-gem-container">
+        <div class="relative z-50 w-full max-w-4xl flex justify-center px-0 mt-2 md:mt-3 min-h-[450px] lg:min-h-0 lg:px-4" id="hero-gem-container">
             <!-- Luxury Pink Glow Behind Gem -->
             <div
                 class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-pink-300/20 blur-[120px] rounded-full pointer-events-none -z-10 hero-glow">
             </div>
 
             <model-viewer id="main-3d-gem" src="{{ asset('images/perfect_ruby.glb') }}" alt="3D Rare Gemstone"
-                disable-zoom camera-orbit="0deg 85deg auto" field-of-view="28deg" environment-image="neutral"
+                disable-zoom camera-orbit="0deg 85deg auto" field-of-view="20deg" environment-image="neutral"
                 tone-mapping="aces" exposure="1.2" shadow-intensity="0" shadow-softness="0" loading="eager" 
                 power-preference="high-performance" minimum-render-scale="1" auto-rotate
                 rotation-per-second="3deg" interaction-prompt="none" auto-rotate-delay="0"
