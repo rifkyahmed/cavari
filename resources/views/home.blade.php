@@ -350,7 +350,7 @@
         </div>
 
         <!-- Central 3D Gemstone -->
-        <div class="relative z-50 w-full max-w-4xl flex justify-center px-4 mt-2 md:mt-3 min-h-[400px] lg:min-h-0"
+        <div class="relative z-50 w-full max-w-4xl flex justify-center px-4 mt-2 md:mt-3 min-h-[350px] lg:min-h-0"
             id="hero-gem-container">
             <!-- Luxury Pink Glow Behind Gem -->
             <div
@@ -362,7 +362,7 @@
                 tone-mapping="aces" exposure="1.2" shadow-intensity="0" shadow-softness="0" loading="eager" 
                 power-preference="high-performance" minimum-render-scale="1" auto-rotate
                 rotation-per-second="3deg" interaction-prompt="none" auto-rotate-delay="0"
-                class="w-[415px] h-[415px] max-w-[95vw] sm:w-[55vw] sm:h-[55vw] md:w-[40vw] md:h-[40vw] lg:w-[40vw] lg:h-[40vw] object-contain drop-shadow-2xl cursor-default pointer-events-none will-change-transform"
+                class="w-[415px] h-[415px] max-w-[95vw] sm:w-[70vw] sm:h-[70vw] md:w-[60vw] md:h-[60vw] lg:w-[40vw] lg:h-[40vw] object-contain drop-shadow-2xl cursor-default pointer-events-none will-change-transform"
                 style="--poster-color: transparent;">
             </model-viewer>
         </div>
@@ -1181,7 +1181,7 @@
                                 endY -= 60;
                             }
 
-                            let targetSize = Math.min(aboutRect.width, aboutRect.height);
+                            let targetSize = Math.min(aboutRect.width, aboutRect.height) * 1.15; // 15% larger on landing
                             let scale = targetSize / gemRect.width;
 
                             transferTween = gsap.to(gem3d, {
