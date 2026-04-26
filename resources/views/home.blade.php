@@ -1200,10 +1200,14 @@
                                 start: "top top",
                                 endTrigger: aboutPlaceholder,
                                 end: "center center",
-                                scrub: window.innerWidth < 1024 ? 0.5 : 2.5, // Faster follow on mobile
+                                scrub: window.innerWidth < 1024 ? 1.8 : 2.5, // Restored Silky Glide
                                 animation: transferTween,
+                                fastScrollEnd: true, // Prevents the jumping bug
+                                anticipatePin: 1,    // Smoother section transitions
                                 onUpdate: (self) => {
                                     const p = self.progress;
+                                    
+                                    // 1. Handle Auto-Rotate
                                     const isTransitioning = p > 0.01 && p < 0.99;
                                     if (isTransitioning) {
                                         if (gem3d.autoRotate) gem3d.autoRotate = false;
@@ -1211,8 +1215,12 @@
                                         if (!gem3d.autoRotate) gem3d.autoRotate = true;
                                     }
 
+                                    // 2. Multi-Layered Smoothing for Camera
+                                    // Use a slightly different easing for the orbit to make it feel more "3D"
                                     let theta = gsap.utils.interpolate(0, 42, p);
                                     let phi = gsap.utils.interpolate(85, 52, p);
+                                    
+                                    // Apply to model
                                     gem3d.cameraOrbit = `${theta}deg ${phi}deg auto`;
                                 }
                             });
