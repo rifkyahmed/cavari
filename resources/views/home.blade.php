@@ -1182,10 +1182,9 @@
 
                             let targetSize = Math.min(aboutRect.width, aboutRect.height);
                             
-                            // Fine-tuned to the "Golden Middle" (1.08) 
-                            // Larger than original, but not overwhelming
+                            // Set to exactly 1.0 (Exact match with Hero size)
                             if (window.innerWidth >= 1024) {
-                                targetSize = gemRect.width * 1.08; 
+                                targetSize = gemRect.width; 
                             }
                             
                             let scale = targetSize / gemRect.width;
