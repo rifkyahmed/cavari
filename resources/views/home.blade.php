@@ -360,7 +360,7 @@
                 tone-mapping="aces" exposure="1.2" shadow-intensity="0.5" shadow-softness="0.5" loading="lazy" 
                 power-preference="high-performance" minimum-render-scale="0.5" auto-rotate
                 rotation-per-second="3deg" interaction-prompt="none" auto-rotate-delay="0"
-                class="w-[415px] h-[415px] max-w-[85vw] sm:w-[55vw] sm:h-[55vw] md:w-[40vw] md:h-[40vw] lg:w-[40vw] lg:h-[40vw] object-contain drop-shadow-2xl cursor-default pointer-events-none"
+                class="w-[415px] h-[415px] max-w-[85vw] sm:w-[55vw] sm:h-[55vw] md:w-[40vw] md:h-[40vw] lg:w-[40vw] lg:h-[40vw] object-contain drop-shadow-2xl cursor-default pointer-events-none will-change-transform"
                 style="--poster-color: transparent;">
             </model-viewer>
         </div>
@@ -1093,12 +1093,13 @@
                     gsap.registerPlugin(ScrollTrigger);
 
                     // --- 0. Smooth Scroll (Lenis) Initialization ---
+                    const isMobile = window.innerWidth < 1024 || ('ontouchstart' in window);
                     const lenis = new Lenis({
                         duration: 1.2,
                         easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
                         smoothWheel: true,
-                        syncTouch: true, // Enable for consistent feel on mobile
-                        touchMultiplier: 1.2
+                        touchMultiplier: 2, // More responsive touch
+                        infinite: false
                     });
 
                     function raf(time) {
@@ -1179,13 +1180,32 @@
                             let targetSize = Math.min(aboutRect.width, aboutRect.height);
                             let scale = targetSize / gemRect.width;
 
-                            // Create direct Tween for structural movement
+                            // Create direct Tween for structural movement AND internal camera
                             transferTween = gsap.to(gem3d, {
                                 x: endX,
                                 y: endY,
                                 scale: scale,
-                                ease: "power1.inOut",
-                                paused: true
+                                ease: "none", // Linear for better scrub control
+                                paused: true,
+                                onUpdate: function() {
+                                    const p = this.progress();
+                                    
+                                    // Handle Auto-Rotate state
+                                    const isTransitioning = p > 0.01 && p < 0.99;
+                                    if (isTransitioning) {
+                                        if (gem3d.autoRotate) gem3d.autoRotate = false;
+                                    } else {
+                                        if (!gem3d.autoRotate) gem3d.autoRotate = true;
+                                    }
+
+                                    // Interpolate Camera Orbit directly in the tween update
+                                    let startTheta = 0; let endTheta = 42;
+                                    let startPhi = 85; let endPhi = 52;
+                                    let theta = gsap.utils.interpolate(startTheta, endTheta, p);
+                                    let phi = gsap.utils.interpolate(startPhi, endPhi, p);
+                                    
+                                    gem3d.cameraOrbit = `${theta}deg ${phi}deg auto`;
+                                }
                             });
 
                             ScrollTrigger.create({
@@ -1193,35 +1213,8 @@
                                 start: "top top",
                                 endTrigger: aboutPlaceholder,
                                 end: "center center",
-                                scrub: 2.5, // Restored the luxury slow-glide
-                                animation: transferTween,
-                                onUpdate: (self) => {
-                                    // Rotate at the top or bottom, but stop during the transition
-                                    const isTransitioning = self.progress > 0.01 && self.progress < 0.99;
-                                    if (isTransitioning) {
-                                        if (gem3d.autoRotate) gem3d.autoRotate = false;
-                                    } else {
-                                        if (!gem3d.autoRotate) gem3d.autoRotate = true;
-                                    }
-
-                                    // Adjust Camera Orbits for the single model
-                                    if (gem3d.cameraOrbit) {
-                                        // Mobile/Tablet usually needs a slightly different angle or distance
-                                        const isMobileOrTablet = window.innerWidth < 1024;
-                                        let startTheta = 0;
-                                        let endTheta = 42;
-                                        let startPhi = 85;
-                                        let endPhi = 52;
-
-                                        let theta = gsap.utils.interpolate(startTheta, endTheta, self.progress);
-                                        let phi = gsap.utils.interpolate(startPhi, endPhi, self.progress);
-                                        
-                                        // Throttled update to prevent "Blocking Time" lag
-                                        requestAnimationFrame(() => {
-                                            gem3d.cameraOrbit = `${theta}deg ${phi}deg auto`;
-                                        });
-                                    }
-                                }
+                                scrub: window.innerWidth < 1024 ? 1.5 : 2.5, 
+                                animation: transferTween
                             });
                         }
 
