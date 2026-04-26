@@ -317,9 +317,10 @@
         /* Optimize blurs for mobile */
         @media (max-width: 1024px) {
             .hero-glow {
-                filter: blur(60px) !important;
-                -webkit-filter: blur(60px) !important;
-                opacity: 0.4 !important;
+                filter: blur(50px) !important;
+                -webkit-filter: blur(50px) !important;
+                opacity: 0.6 !important;
+                background: rgba(255, 182, 193, 0.4) !important; /* Slightly more vibrant pink */
             }
         }
     </style>
@@ -1181,12 +1182,14 @@
                             let targetSize = Math.min(aboutRect.width, aboutRect.height);
                             let scale = targetSize / gemRect.width;
 
-                            // Create direct Tween for structural movement AND internal camera
+                            // Proxy object for "Double-Smoothing" the camera orbit
+                            const orbitProxy = { theta: 0, phi: 85 };
+                            
                             transferTween = gsap.to(gem3d, {
                                 x: endX,
                                 y: endY,
                                 scale: scale,
-                                ease: "none", // Linear for better scrub control
+                                ease: "none", 
                                 paused: true,
                                 onUpdate: function() {
                                     const p = this.progress();
@@ -1199,13 +1202,22 @@
                                         if (!gem3d.autoRotate) gem3d.autoRotate = true;
                                     }
 
-                                    // Interpolate Camera Orbit directly in the tween update
-                                    let startTheta = 0; let endTheta = 42;
-                                    let startPhi = 85; let endPhi = 52;
-                                    let theta = gsap.utils.interpolate(startTheta, endTheta, p);
-                                    let phi = gsap.utils.interpolate(startPhi, endPhi, p);
-                                    
-                                    gem3d.cameraOrbit = `${theta}deg ${phi}deg auto`;
+                                    // Calculate target angles
+                                    let targetTheta = gsap.utils.interpolate(0, 42, p);
+                                    let targetPhi = gsap.utils.interpolate(85, 52, p);
+
+                                    // "Double-Smoothing": Animate the proxy to the target, then apply to gem
+                                    // This creates a silky smooth feel even during fast scrolls
+                                    gsap.to(orbitProxy, {
+                                        theta: targetTheta,
+                                        phi: targetPhi,
+                                        duration: 0.4, // Small smoothing window
+                                        ease: "power1.out",
+                                        overwrite: "auto",
+                                        onUpdate: () => {
+                                            gem3d.cameraOrbit = `${orbitProxy.theta}deg ${orbitProxy.phi}deg auto`;
+                                        }
+                                    });
                                 }
                             });
 
@@ -1214,7 +1226,7 @@
                                 start: "top top",
                                 endTrigger: aboutPlaceholder,
                                 end: "center center",
-                                scrub: window.innerWidth < 1024 ? 1.5 : 2.5, 
+                                scrub: window.innerWidth < 1024 ? 1.2 : 2.5, 
                                 animation: transferTween
                             });
                         }
