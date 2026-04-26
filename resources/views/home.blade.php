@@ -317,10 +317,11 @@
         /* Optimize blurs for mobile */
         @media (max-width: 1024px) {
             .hero-glow {
-                filter: blur(50px) !important;
-                -webkit-filter: blur(50px) !important;
-                opacity: 0.6 !important;
-                background: rgba(255, 182, 193, 0.4) !important; /* Slightly more vibrant pink */
+                filter: blur(40px) !important;
+                -webkit-filter: blur(40px) !important;
+                opacity: 0.5 !important;
+                background: #ffb6c1 !important; 
+                border-radius: 50%;
             }
         }
     </style>
@@ -1182,37 +1183,49 @@
                             let targetSize = Math.min(aboutRect.width, aboutRect.height);
                             let scale = targetSize / gemRect.width;
 
-                            // Use quickTo for the highest possible performance
-                            const xTo = gsap.quickTo(gem3d, "x", {duration: 0.6, ease: "power2.out"});
-                            const yTo = gsap.quickTo(gem3d, "y", {duration: 0.6, ease: "power2.out"});
-                            const scaleTo = gsap.quickTo(gem3d, "scale", {duration: 0.6, ease: "power2.out"});
+                            // Master Animation State
+                            let state = {
+                                target: 0,
+                                current: 0,
+                                lerp: window.innerWidth < 1024 ? 0.08 : 0.05 // Smoothing factor
+                            };
+
+                            // Independent Rendering Loop (Apple-style)
+                            gsap.ticker.add(() => {
+                                // Smoothly move current towards target
+                                state.current += (state.target - state.current) * state.lerp;
+                                
+                                const p = state.current;
+                                
+                                // 1. Handle Auto-Rotate
+                                const isTransitioning = p > 0.01 && p < 0.99;
+                                if (isTransitioning) {
+                                    if (gem3d.autoRotate) gem3d.autoRotate = false;
+                                } else {
+                                    if (!gem3d.autoRotate) gem3d.autoRotate = true;
+                                }
+
+                                // 2. Update Structural Position
+                                // We use direct style updates for maximum performance in a loop
+                                const x = endX * p;
+                                const y = endY * p;
+                                const s = 1 + (scale - 1) * p;
+                                gem3d.style.transform = `translate(${x}px, ${y}px) scale(${s})`;
+
+                                // 3. Internal Camera Rotation (Only if change is significant)
+                                let theta = 42 * p;
+                                let phi = 85 + (52 - 85) * p;
+                                gem3d.cameraOrbit = `${theta}deg ${phi}deg auto`;
+                            });
 
                             ScrollTrigger.create({
                                 trigger: heroContainer,
                                 start: "top top",
                                 endTrigger: aboutPlaceholder,
                                 end: "center center",
-                                scrub: window.innerWidth < 1024 ? 1 : 2.5,
+                                scrub: true, // Scrub only updates the target value
                                 onUpdate: (self) => {
-                                    const p = self.progress;
-                                    
-                                    // Handle Auto-Rotate
-                                    const isTransitioning = p > 0.01 && p < 0.99;
-                                    if (isTransitioning) {
-                                        if (gem3d.autoRotate) gem3d.autoRotate = false;
-                                    } else {
-                                        if (!gem3d.autoRotate) gem3d.autoRotate = true;
-                                    }
-
-                                    // Direct structural movement updates
-                                    xTo(endX * p);
-                                    yTo(endY * p);
-                                    scaleTo(1 + (scale - 1) * p);
-
-                                    // Internal camera rotation (Throttled)
-                                    let theta = gsap.utils.interpolate(0, 42, p);
-                                    let phi = gsap.utils.interpolate(85, 52, p);
-                                    gem3d.cameraOrbit = `${theta}deg ${phi}deg auto`;
+                                    state.target = self.progress;
                                 }
                             });
                         }
