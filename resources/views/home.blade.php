@@ -359,8 +359,8 @@
 
             <model-viewer id="main-3d-gem" src="{{ asset('images/perfect_ruby.glb') }}" alt="3D Rare Gemstone"
                 disable-zoom camera-orbit="0deg 85deg auto" field-of-view="28deg" environment-image="neutral"
-                tone-mapping="aces" exposure="1.2" shadow-intensity="0.5" shadow-softness="0.5" loading="lazy"
-                power-preference="high-performance" minimum-render-scale="0.5" auto-rotate
+                tone-mapping="aces" exposure="1.2" shadow-intensity="0" shadow-softness="0" loading="eager" 
+                power-preference="high-performance" minimum-render-scale="1" auto-rotate
                 rotation-per-second="3deg" interaction-prompt="none" auto-rotate-delay="0"
                 class="w-[415px] h-[415px] max-w-[85vw] sm:w-[55vw] sm:h-[55vw] md:w-[40vw] md:h-[40vw] lg:w-[40vw] lg:h-[40vw] object-contain drop-shadow-2xl cursor-default pointer-events-none will-change-transform"
                 style="--poster-color: transparent;">
@@ -1200,7 +1200,7 @@
                                 start: "top top",
                                 endTrigger: aboutPlaceholder,
                                 end: "center center",
-                                scrub: window.innerWidth < 1024 ? 1.5 : 2.5,
+                                scrub: window.innerWidth < 1024 ? 0.5 : 2.5, // Faster follow on mobile
                                 animation: transferTween,
                                 onUpdate: (self) => {
                                     const p = self.progress;
