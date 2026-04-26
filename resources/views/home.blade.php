@@ -1093,29 +1093,26 @@
                     gsap.registerPlugin(ScrollTrigger);
 
                     // --- 0. Smooth Scroll (Lenis) Initialization ---
-                    const isMobile = window.innerWidth < 1024 || ('ontouchstart' in window);
-                    let lenis = null;
+                    const lenis = new Lenis({
+                        duration: 1.2,
+                        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+                        smoothWheel: true,
+                        syncTouch: true, // Enable for consistent feel on mobile
+                        touchMultiplier: 1.2
+                    });
 
-                    if (!isMobile) {
-                        lenis = new Lenis({
-                            duration: 1.2,
-                            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-                            smoothWheel: true
-                        });
-
-                        function raf(time) {
-                            lenis.raf(time);
-                            requestAnimationFrame(raf);
-                        }
+                    function raf(time) {
+                        lenis.raf(time);
                         requestAnimationFrame(raf);
-
-                        // Sync ScrollTrigger with Lenis
-                        lenis.on('scroll', ScrollTrigger.update);
-                        gsap.ticker.add((time) => {
-                            lenis.raf(time * 1000);
-                        });
-                        gsap.ticker.lagSmoothing(0);
                     }
+                    requestAnimationFrame(raf);
+
+                    // Sync ScrollTrigger with Lenis
+                    lenis.on('scroll', ScrollTrigger.update);
+                    gsap.ticker.add((time) => {
+                        lenis.raf(time * 1000);
+                    });
+                    gsap.ticker.lagSmoothing(0);
 
                     // 3. The Atelier Horizontal Scroll (Pin & Translate)
                     const atelierTrack = document.getElementById('atelier-track');
@@ -1196,7 +1193,7 @@
                                 start: "top top",
                                 endTrigger: aboutPlaceholder,
                                 end: "center center",
-                                scrub: window.innerWidth < 1024 ? 1 : 2.5, // Faster catch-up on mobile
+                                scrub: 2.5, // Restored the luxury slow-glide
                                 animation: transferTween,
                                 onUpdate: (self) => {
                                     // Rotate at the top or bottom, but stop during the transition
@@ -1219,10 +1216,10 @@
                                         let theta = gsap.utils.interpolate(startTheta, endTheta, self.progress);
                                         let phi = gsap.utils.interpolate(startPhi, endPhi, self.progress);
                                         
-                                        // Only animate camera orbit on desktop to save mobile GPU
-                                        if (!isMobileOrTablet) {
+                                        // Throttled update to prevent "Blocking Time" lag
+                                        requestAnimationFrame(() => {
                                             gem3d.cameraOrbit = `${theta}deg ${phi}deg auto`;
-                                        }
+                                        });
                                     }
                                 }
                             });
