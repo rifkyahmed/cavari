@@ -352,7 +352,7 @@
         </div>
 
         <!-- Central 3D Gemstone -->
-        <div class="relative z-50 w-full max-w-4xl flex justify-center px-4 mt-2 md:mt-3" id="hero-gem-container">
+        <div class="relative z-50 w-full max-w-4xl flex justify-center px-4 mt-2 md:mt-3 min-h-[350px] lg:min-h-0" id="hero-gem-container">
             <!-- Luxury Pink Glow Behind Gem -->
             <div
                 class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-pink-300/20 blur-[120px] rounded-full pointer-events-none -z-10 hero-glow">
