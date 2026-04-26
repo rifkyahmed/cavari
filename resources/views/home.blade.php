@@ -317,8 +317,9 @@
         /* Optimize blurs for mobile */
         @media (max-width: 1024px) {
             .hero-glow {
-                blur: 40px !important;
-                opacity: 0.15 !important;
+                filter: blur(60px) !important;
+                -webkit-filter: blur(60px) !important;
+                opacity: 0.4 !important;
             }
         }
     </style>
