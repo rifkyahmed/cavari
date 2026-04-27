@@ -461,7 +461,7 @@
     </section>
 
     <!-- About Section -->
-    <section class="relative w-full pt-16 pb-0 md:pt-16 md:pb-16 lg:pt-24 lg:pb-36 bg-transparent overflow-hidden">
+    <section class="relative w-full pt-20 pb-0 md:pt-16 md:pb-16 lg:pt-24 lg:pb-36 bg-transparent overflow-hidden">
 
         <div class="max-w-7xl mx-auto px-6">
 
