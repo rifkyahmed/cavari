@@ -682,7 +682,7 @@
     </script>
 
     <!-- Reviews Section -->
-    <section class="relative w-full py-16 lg:py-32 overflow-hidden -mt-24 lg:-mt-[60px]"
+    <section class="relative w-full py-16 lg:py-32 overflow-hidden -mt-[5.5rem] lg:-mt-[60px]"
         style="background-color: transparent;">
         <div class="max-w-7xl mx-auto px-6 relative"> <!-- Standard container -->
 
