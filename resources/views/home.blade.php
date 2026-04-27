@@ -366,7 +366,7 @@
         </div>
 
         <div
-            class="absolute bottom-[18%] md:bottom-[15%] lg:bottom-[26%] left-6 right-6 lg:left-[8%] lg:right-[7%] z-20 flex flex-col lg:flex-row items-center lg:items-end justify-between gap-5 lg:gap-0">
+            class="absolute bottom-[16%] md:bottom-[12%] lg:bottom-[24%] left-6 right-6 lg:left-[8%] lg:right-[7%] z-20 flex flex-col lg:flex-row items-center lg:items-end justify-between gap-5 lg:gap-0">
             <!-- Description (Left) -->
             <div class="max-w-full lg:max-w-md text-center lg:text-left mx-auto lg:mx-0">
                 <p
