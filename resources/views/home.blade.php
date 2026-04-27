@@ -840,7 +840,7 @@
     <!-- h-screen ensures a fixed reference frame for pinning -->
     <section id="atelier-section"
         class="w-full bg-transparent py-0 overflow-hidden relative flex flex-col justify-center"
-        style="margin-top: 20px;">
+        style="margin-top: -30px;">
         <div class="max-w-[95%] mx-auto px-6 w-full h-full flex flex-col justify-center">
 
             <!-- Header -->
