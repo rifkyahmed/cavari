@@ -367,7 +367,7 @@
 
         <!-- Bottom Hero HUD -->
         <div
-            class="absolute bottom-[18%] md:bottom-[10%] lg:bottom-[22%] left-6 right-6 lg:left-[8%] lg:right-[7%] z-20 flex flex-col lg:flex-row items-center lg:items-end justify-between gap-5 lg:gap-0">
+            class="absolute bottom-[8%] md:bottom-[10%] lg:bottom-[22%] left-6 right-6 lg:left-[8%] lg:right-[7%] z-20 flex flex-col lg:flex-row items-center lg:items-end justify-between gap-5 lg:gap-0">
             <!-- Description (Left) -->
             <div class="max-w-full lg:max-w-md text-center lg:text-left mx-auto lg:mx-0">
                 <p
@@ -393,7 +393,7 @@
         </div>
 
         <!-- Social Icons (Bottom Left) -->
-        <div class="absolute bottom-12 md:-bottom-4 lg:bottom-8 left-6 md:left-20 z-20 flex items-center">
+        <div class="absolute bottom-6 md:-bottom-4 lg:bottom-8 left-6 md:left-20 z-20 flex items-center">
             <!-- Back/Chevron Circle -->
             <button id="social-toggle"
                 class="relative z-30 w-10 h-10 border border-gray-900 rounded-full flex items-center justify-center bg-transparent transition-colors duration-300 hover:bg-black hover:text-white group">
