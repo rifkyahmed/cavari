@@ -145,24 +145,26 @@ class DatabaseSeeder extends Seeder
         );
 
         // 3. Earrings
-        Product::create([
-            'category_id' => $earringCat->id,
-            'name' => 'Solar Flare',
-            'slug' => 'solar-flare-ruby-earrings',
-            'description' => 'Radiant ruby stud earrings that capture the light with every movement. Set in 18k rose gold.',
-            'price' => 4200.00,
-            'stock' => 8,
-            'gemstone_type' => 'Ruby',
-            'images' => ['images/earrings-1.png'],
-            'is_featured' => true,
-            'product_type' => 'jewelry',
-            'color' => 'Red',
-            'weight' => 1.2,
-            'shape' => 'Round',
-            'treatment' => 'Heated',
-            'metal' => 'Rose Gold',
-            'original_price' => 4500.00,
-        ]);
+        Product::updateOrCreate(
+            ['slug' => 'solar-flare-ruby-earrings'],
+            [
+                'category_id' => $earringCat->id,
+                'name' => 'Solar Flare',
+                'description' => 'Radiant ruby stud earrings that capture the light with every movement. Set in 18k rose gold.',
+                'price' => 4200.00,
+                'stock' => 8,
+                'gemstone_type' => 'Ruby',
+                'images' => ['images/earrings-1.png'],
+                'is_featured' => true,
+                'product_type' => 'jewelry',
+                'color' => 'Red',
+                'weight' => 1.2,
+                'shape' => 'Round',
+                'treatment' => 'Heated',
+                'metal' => 'Rose Gold',
+                'original_price' => 4500.00,
+            ]
+        );
 
         // 4. Bracelets
         Product::create([
