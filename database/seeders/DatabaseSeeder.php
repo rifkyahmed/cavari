@@ -167,23 +167,25 @@ class DatabaseSeeder extends Seeder
         );
 
         // 4. Bracelets
-        Product::create([
-            'category_id' => $braceletCat->id,
-            'name' => 'Eternal Link',
-            'slug' => 'eternal-link-diamond-bracelet',
-            'description' => 'A continuous line of brilliant-cut diamonds set in platinum. A timeless piece for the modern collector.',
-            'price' => 6800.00,
-            'stock' => 4,
-            'gemstone_type' => 'Diamond',
-            'images' => ['images/bracelet-1.png'],
-            'is_featured' => true,
-            'product_type' => 'jewelry',
-            'color' => 'White',
-            'weight' => 4.5,
-            'shape' => 'Round',
-            'treatment' => 'None',
-            'metal' => 'Platinum',
-        ]);
+        Product::updateOrCreate(
+            ['slug' => 'eternal-link-diamond-bracelet'],
+            [
+                'category_id' => $braceletCat->id,
+                'name' => 'Eternal Link',
+                'description' => 'A continuous line of brilliant-cut diamonds set in platinum. A timeless piece for the modern collector.',
+                'price' => 6800.00,
+                'stock' => 4,
+                'gemstone_type' => 'Diamond',
+                'images' => ['images/bracelet-1.png'],
+                'is_featured' => true,
+                'product_type' => 'jewelry',
+                'color' => 'White',
+                'weight' => 4.5,
+                'shape' => 'Round',
+                'treatment' => 'None',
+                'metal' => 'Platinum',
+            ]
+        );
 
         // 5. Loose Gems
         Product::create([
