@@ -188,22 +188,24 @@ class DatabaseSeeder extends Seeder
         );
 
         // 5. Loose Gems
-        Product::create([
-            'category_id' => $gemCat->id,
-            'name' => 'Royal Burma Ruby',
-            'slug' => 'royal-burma-ruby-loose',
-            'description' => 'Unheated, pigeon-blood ruby of the finest quality. A collector’s dream.',
-            'price' => 25000.00,
-            'stock' => 1,
-            'gemstone_type' => 'Ruby',
-            'images' => ['images/ruby.png'],
-            'is_featured' => true,
-            'product_type' => 'gem',
-            'color' => 'Red',
-            'weight' => 3.05,
-            'shape' => 'Cushion',
-            'treatment' => 'Unheated',
-        ]);
+        Product::updateOrCreate(
+            ['slug' => 'royal-burma-ruby-loose'],
+            [
+                'category_id'   => $gemCat->id,
+                'name'          => 'Royal Burma Ruby',
+                'description'   => 'Unheated, pigeon-blood ruby of the finest quality. A collector’s dream.',
+                'price'         => 25000.00,
+                'stock'         => 1,
+                'gemstone_type' => 'Ruby',
+                'images'        => ['images/ruby.png'],
+                'is_featured'   => true,
+                'product_type'  => 'gem',
+                'color'         => 'Red',
+                'weight'        => 3.05,
+                'shape'         => 'Cushion',
+                'treatment'     => 'Unheated',
+            ]
+        );
 
         Product::create([
             'category_id' => $gemCat->id,
