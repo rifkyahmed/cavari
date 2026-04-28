@@ -97,7 +97,7 @@ class ProductController extends Controller
 
         $glVideo = $request->input('gl_video');
         // We handle the video separately from images to avoid it ending up in the images array
-        
+
         $savedFiles = $this->downloadMultipleFiles($urls, 'products/images');
 
         $imagePaths = [];
@@ -446,17 +446,39 @@ class ProductController extends Controller
         return redirect()->route('admin.products.index')->with('success', 'Product deleted successfully.');
     }
 
+
+
+    /**
+     * Bulk delete selected products.
+     */
+    public function bulkDelete(Request $request)
+    {
+        $request->validate([
+            'selected' => 'required|array',
+            'selected.*' => 'integer|exists:products,id',
+        ]);
+
+        $ids = $request->input('selected');
+        // Disable foreign key checks for mass deletion
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+        Product::whereIn('id', $ids)->delete();
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+
+        return redirect()->route('admin.products.index')
+            ->with('success', count($ids) . ' product(s) deleted successfully.');
+    }
+
+    /**
+     * Delete all products (truncate).
+     */
     public function destroyAll()
     {
-        // Add safeguard like confirmation or only delete non-ordered products if needed
-        // For now, strict deletion
-        Product::truncate(); // Or Product::query()->delete(); truncate resets IDs
-        // If foreign key constraints exist, we might need:
-        // DB::statement('SET FOREIGN_KEY_CHECKS=0;'); Product::truncate(); DB::statement('SET FOREIGN_KEY_CHECKS=1;');
-        // Since we have cascade on delete, Product::query()->delete() is safer.
+        // Disable foreign key checks to allow truncation despite constraints
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+        Product::truncate(); // Truncate resets IDs and removes all rows
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
 
-        Product::query()->delete();
-
-        return redirect()->route('admin.products.index')->with('success', 'All products have been deleted.');
+        return redirect()->route('admin.products.index')
+            ->with('success', 'All products have been deleted.');
     }
 }

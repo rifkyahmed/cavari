@@ -129,6 +129,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::post('/dashboard/update-gold', [AdminDashboardController::class, 'updateGoldPrice'])->name('dashboard.update-gold');
     Route::post('/gemlightbox-import', [\App\Http\Controllers\Admin\GemLightboxImportController::class, 'fetch'])->name('gemlightbox.import');
     Route::patch('products/{product}/toggle-visibility', [AdminProductController::class, 'toggleVisibility'])->name('products.toggle-visibility');
+    Route::post('products/bulk-delete', [AdminProductController::class, 'bulkDelete'])->name('products.bulkDelete');
     Route::delete('products/delete-all', [AdminProductController::class, 'destroyAll'])->name('products.destroyAll');
     Route::resource('products', AdminProductController::class);
     Route::delete('categories/delete-all', [\App\Http\Controllers\Admin\CategoryController::class, 'destroyAll'])->name('categories.destroyAll');

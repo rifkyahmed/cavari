@@ -4,7 +4,16 @@
 <div class="mb-6 flex justify-between items-center">
     <h1 class="text-3xl font-bold font-space-mono text-gray-800">Products</h1>
     
-    <div class="flex space-x-4">
+    <div class="flex items-center space-x-4">
+        <!-- Bulk Delete Form (Selected Items) -->
+        <form id="bulk-delete-form" action="{{ route('admin.products.bulkDelete') }}" method="POST" class="hidden">
+            @csrf
+            <button type="submit" id="delete-selected-btn" class="px-4 py-2 bg-rose-500 hover:bg-rose-600 text-white font-bold rounded-lg shadow transition-all font-space-mono text-sm uppercase flex items-center" onclick="return confirm('Delete selected products?')">
+                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                Delete Selected (<span id="selected-count">0</span>)
+            </button>
+        </form>
+
         <form action="{{ route('admin.products.destroyAll') }}" method="POST" onsubmit="return confirm('WARNING: This will delete ALL products! Are you absolutely sure?');">
             @csrf
             @method('DELETE')
@@ -25,6 +34,9 @@
         <table class="min-w-full divide-y divide-gray-200">
             <thead class="bg-white/50">
                 <tr>
+                    <th class="px-4 py-3 text-left">
+                        <input type="checkbox" id="select-all" class="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500">
+                    </th>
                     <th class="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider font-space-mono">Image</th>
                     <th class="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider font-space-mono max-w-[200px]">Name</th>
                     <th class="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider font-space-mono">Category</th>
@@ -40,6 +52,9 @@
             <tbody class="divide-y divide-gray-200">
                 @forelse($products as $product)
                     <tr class="hover:bg-white/40 transition-colors {{ $product->is_hidden ? 'opacity-60 bg-gray-50' : '' }}">
+                        <td class="px-4 py-4 whitespace-nowrap">
+                            <input type="checkbox" name="selected[]" value="{{ $product->id }}" form="bulk-delete-form" class="product-checkbox rounded border-gray-300 text-indigo-600 focus:ring-indigo-500">
+                        </td>
                         <td class="px-6 py-4 whitespace-nowrap">
                             @if(isset($product->images) && count($product->images) > 0)
                                 <img src="{{ asset($product->images[0]) }}" alt="{{ $product->name }}" class="h-12 w-12 rounded object-cover shadow-sm">
@@ -132,7 +147,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="9" class="px-6 py-10 text-center text-gray-500 italic">No products found. Start adding some!</td>
+                        <td colspan="11" class="px-6 py-10 text-center text-gray-500 italic">No products found. Start adding some!</td>
                     </tr>
                 @endforelse
             </tbody>
@@ -143,4 +158,48 @@
         {{ $products->links() }}
     </div>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const selectAll = document.getElementById('select-all');
+    const productCheckboxes = document.querySelectorAll('.product-checkbox');
+    const bulkDeleteForm = document.getElementById('bulk-delete-form');
+    const selectedCount = document.getElementById('selected-count');
+
+    function updateBulkDeleteVisibility() {
+        const checkedCount = document.querySelectorAll('.product-checkbox:checked').length;
+        if (checkedCount > 0) {
+            bulkDeleteForm.classList.remove('hidden');
+            selectedCount.textContent = checkedCount;
+        } else {
+            bulkDeleteForm.classList.add('hidden');
+        }
+    }
+
+    if (selectAll) {
+        selectAll.addEventListener('change', function() {
+            productCheckboxes.forEach(checkbox => {
+                checkbox.checked = selectAll.checked;
+            });
+            updateBulkDeleteVisibility();
+        });
+    }
+
+    productCheckboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', function() {
+            updateBulkDeleteVisibility();
+            
+            // Update selectAll status
+            const allChecked = Array.from(productCheckboxes).every(cb => cb.checked);
+            const noneChecked = Array.from(productCheckboxes).every(cb => !cb.checked);
+            
+            if (selectAll) {
+                selectAll.checked = allChecked;
+                selectAll.indeterminate = !allChecked && !noneChecked;
+            }
+        });
+    });
+});
+</script>
 @endsection
+
