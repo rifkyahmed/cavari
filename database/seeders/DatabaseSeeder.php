@@ -104,23 +104,25 @@ class DatabaseSeeder extends Seeder
         );
 
         // 2. Necklaces
-        Product::create([
-            'category_id' => $neckCat->id,
-            'name' => 'Celestial Drop',
-            'slug' => 'celestial-drop-pendant',
-            'description' => 'A solitary pear-shaped diamond suspended from a delicate 18k white gold chain. Pure elegance defined.',
-            'price' => 12500.00,
-            'stock' => 3,
-            'gemstone_type' => 'Diamond',
-            'images' => ['images/necklace-1.png'],
-            'is_featured' => true,
-            'product_type' => 'jewelry',
-            'color' => 'White',
-            'weight' => 1.5,
-            'shape' => 'Pear',
-            'treatment' => 'None',
-            'metal' => 'White Gold',
-        ]);
+        Product::updateOrCreate(
+            ['slug' => 'celestial-drop-pendant'],
+            [
+                'category_id' => $neckCat->id,
+                'name' => 'Celestial Drop',
+                'description' => 'A solitary pear-shaped diamond suspended from a delicate 18k white gold chain. Pure elegance defined.',
+                'price' => 12500.00,
+                'stock' => 3,
+                'gemstone_type' => 'Diamond',
+                'images' => ['images/necklace-1.png'],
+                'is_featured' => true,
+                'product_type' => 'jewelry',
+                'color' => 'White',
+                'weight' => 1.5,
+                'shape' => 'Pear',
+                'treatment' => 'None',
+                'metal' => 'White Gold',
+            ]
+        );
 
         Product::create([
             'category_id' => $neckCat->id,
