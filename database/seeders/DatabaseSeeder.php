@@ -124,23 +124,25 @@ class DatabaseSeeder extends Seeder
             ]
         );
 
-        Product::create([
-            'category_id' => $neckCat->id,
-            'name' => 'Verdant Heart',
-            'slug' => 'verdant-heart-emerald-necklace',
-            'description' => 'A Colombian emerald of exceptional clarity, cut into a heart shape and set in yellow gold.',
-            'price' => 15200.00,
-            'stock' => 1,
-            'gemstone_type' => 'Emerald',
-            'images' => ['images/necklace-1.png'], // Reusing for demo, ideally different
-            'is_featured' => false,
-            'product_type' => 'jewelry',
-            'color' => 'Green',
-            'weight' => 2.8,
-            'shape' => 'Heart',
-            'treatment' => 'Oil Treated',
-            'metal' => 'Gold',
-        ]);
+        Product::updateOrCreate(
+            ['slug' => 'verdant-heart-emerald-necklace'],
+            [
+                'category_id'   => $neckCat->id,
+                'name'          => 'Verdant Heart',
+                'description'   => 'A Colombian emerald of exceptional clarity, cut into a heart shape and set in yellow gold.',
+                'price'         => 15200.00,
+                'stock'         => 1,
+                'gemstone_type' => 'Emerald',
+                'images'        => ['images/necklace-1.png'], // Reusing for demo, ideally different
+                'is_featured'   => false,
+                'product_type'  => 'jewelry',
+                'color'         => 'Green',
+                'weight'        => 2.8,
+                'shape'         => 'Heart',
+                'treatment'     => 'Oil Treated',
+                'metal'         => 'Gold',
+            ]
+        );
 
         // 3. Earrings
         Product::create([
