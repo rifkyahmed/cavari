@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Cache;
 
 class CategoryController extends Controller
 {
@@ -62,6 +63,7 @@ class CategoryController extends Controller
             'parent_id' => $parentId,
         ]);
 
+        Cache::forget('admin_dashboard_stats');
         return redirect()->route('admin.categories.index')->with('success', 'Category created successfully.');
     }
 
@@ -105,6 +107,7 @@ class CategoryController extends Controller
             'parent_id' => $parentId,
         ]);
 
+        Cache::forget('admin_dashboard_stats');
         return redirect()->route('admin.categories.index')->with('success', 'Category updated successfully.');
     }
 
@@ -114,6 +117,7 @@ class CategoryController extends Controller
             return back()->with('error', 'Cannot delete category with associated products.');
         }
         $category->delete();
+        Cache::forget('admin_dashboard_stats');
         return redirect()->route('admin.categories.index')->with('success', 'Category deleted successfully.');
     }
 
@@ -122,6 +126,7 @@ class CategoryController extends Controller
         // Security check: only allow if not many products or after confirmation?
         // Let's just do it as requested
         Category::query()->delete();
+        Cache::forget('admin_dashboard_stats');
         return redirect()->route('admin.categories.index')->with('success', 'All categories deleted successfully.');
     }
 }

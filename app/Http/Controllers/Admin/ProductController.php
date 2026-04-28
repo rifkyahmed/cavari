@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Cache;
 
 class ProductController extends Controller
 {
@@ -198,6 +199,7 @@ class ProductController extends Controller
 
         ]);
 
+        Cache::forget('admin_dashboard_stats');
         return redirect()->route('admin.products.index')->with('success', 'Product created successfully.');
     }
 
@@ -421,6 +423,7 @@ class ProductController extends Controller
 
         $product->update($data);
 
+        Cache::forget('admin_dashboard_stats');
         return redirect()->route('admin.products.index')->with('success', 'Product updated successfully.');
     }
 
@@ -443,6 +446,7 @@ class ProductController extends Controller
         // }
 
         $product->delete();
+        Cache::forget('admin_dashboard_stats');
         return redirect()->route('admin.products.index')->with('success', 'Product deleted successfully.');
     }
 
@@ -464,6 +468,7 @@ class ProductController extends Controller
         Product::whereIn('id', $ids)->delete();
         DB::statement('SET FOREIGN_KEY_CHECKS=1;');
 
+        Cache::forget('admin_dashboard_stats');
         return redirect()->route('admin.products.index')
             ->with('success', count($ids) . ' product(s) deleted successfully.');
     }
@@ -478,6 +483,7 @@ class ProductController extends Controller
         Product::truncate(); // Truncate resets IDs and removes all rows
         DB::statement('SET FOREIGN_KEY_CHECKS=1;');
 
+        Cache::forget('admin_dashboard_stats');
         return redirect()->route('admin.products.index')
             ->with('success', 'All products have been deleted.');
     }
