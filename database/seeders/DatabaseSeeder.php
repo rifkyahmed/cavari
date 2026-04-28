@@ -17,10 +17,10 @@ class DatabaseSeeder extends Seeder
     {
         // Admin User
         User::updateOrCreate(
-            ['email' => 'admin@example.com'],
+            ['email' => env('ADMIN_EMAIL', 'admin@example.com')],
             [
-                'name' => 'Admin User',
-                'password' => bcrypt('password'),
+                'name' => env('ADMIN_NAME', 'Admin User'),
+                'password' => bcrypt(env('ADMIN_PASSWORD', 'password')),
                 'role' => 'admin'
             ]
         );
