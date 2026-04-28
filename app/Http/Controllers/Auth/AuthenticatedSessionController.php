@@ -84,9 +84,13 @@ class AuthenticatedSessionController extends Controller
         }
 
         if ($user->isAdmin()) {
+            // Set admin flag in session for later checks
+            session(['is_admin' => true]);
             return redirect()->route('admin.dashboard');
         }
 
+        // Ensure admin flag is false for non-admin users
+        session(['is_admin' => false]);
         return redirect()->to($intended);
     }
 
@@ -96,6 +100,9 @@ class AuthenticatedSessionController extends Controller
     public function destroy(Request $request): RedirectResponse
     {
         Auth::guard('web')->logout();
+
+        // Clear admin flag on logout
+        $request->session()->forget('is_admin');
 
         $request->session()->invalidate();
 
