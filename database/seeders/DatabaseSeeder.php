@@ -207,107 +207,119 @@ class DatabaseSeeder extends Seeder
             ]
         );
 
-        Product::create([
-            'category_id' => $gemCat->id,
-            'name' => 'Ceylon Blue Sapphire',
-            'slug' => 'ceylon-blue-sapphire-loose',
-            'description' => 'Velvety blue sapphire, 4.20 carats. Perfectly cut to maximize brilliance.',
-            'price' => 8900.00,
-            'stock' => 2,
-            'gemstone_type' => 'Sapphire',
-            'images' => ['images/sapphire.png'],
-            'is_featured' => true,
-            'product_type' => 'gem',
-            'color' => 'Blue',
-            'weight' => 4.20,
-            'shape' => 'Oval',
-            'treatment' => 'Heated',
-        ]);
+        Product::updateOrCreate(
+            ['slug' => 'ceylon-blue-sapphire-loose'],
+            [
+                'category_id' => $gemCat->id,
+                'name' => 'Ceylon Blue Sapphire',
+                'description' => 'Velvety blue sapphire, 4.20 carats. Perfectly cut to maximize brilliance.',
+                'price' => 8900.00,
+                'stock' => 2,
+                'gemstone_type' => 'Sapphire',
+                'images' => ['images/sapphire.png'],
+                'is_featured' => true,
+                'product_type' => 'gem',
+                'color' => 'Blue',
+                'weight' => 4.20,
+                'shape' => 'Oval',
+                'treatment' => 'Heated',
+            ]
+        );
 
-        Product::create([
-            'category_id' => $gemCat->id,
-            'name' => 'Zambian Emerald',
-            'slug' => 'zambian-emerald-loose',
-            'description' => 'Vivid green emerald with minor oil. A stone of growth and renewal.',
-            'price' => 15200.00,
-            'stock' => 1,
-            'gemstone_type' => 'Emerald',
-            'images' => ['images/emerald.png'],
-            'is_featured' => true,
-            'product_type' => 'gem',
-            'color' => 'Green',
-            'weight' => 2.15,
-            'shape' => 'Emerald',
-            'treatment' => 'Oil Treated',
-        ]);
+        Product::updateOrCreate(
+            ['slug' => 'zambian-emerald-loose'],
+            [
+                'category_id' => $gemCat->id,
+                'name' => 'Zambian Emerald',
+                'description' => 'Vivid green emerald with minor oil. A stone of growth and renewal.',
+                'price' => 15200.00,
+                'stock' => 1,
+                'gemstone_type' => 'Emerald',
+                'images' => ['images/emerald.png'],
+                'is_featured' => true,
+                'product_type' => 'gem',
+                'color' => 'Green',
+                'weight' => 2.15,
+                'shape' => 'Emerald',
+                'treatment' => 'Oil Treated',
+            ]
+        );
 
-        Product::create([
-            'category_id' => $gemCat->id,
-            'name' => 'Pink Tourmaline',
-            'slug' => 'pink-tourmaline-loose',
-            'description' => 'A vibrant pink tourmaline, offering a playful yet sophisticated pop of color.',
-            'price' => 3400.00,
-            'stock' => 5,
-            'gemstone_type' => 'Tourmaline',
-            'images' => ['images/pink_gemstone_hero.png'],
-            'is_featured' => false,
-            'product_type' => 'gem',
-            'color' => 'Pink',
-            'weight' => 3.8,
-            'shape' => 'Oval',
-            'treatment' => 'None',
-            'original_price' => 3800.00,
-        ]);
+        Product::updateOrCreate(
+            ['slug' => 'pink-tourmaline-loose'],
+            [
+                'category_id' => $gemCat->id,
+                'name' => 'Pink Tourmaline',
+                'description' => 'A vibrant pink tourmaline, offering a playful yet sophisticated pop of color.',
+                'price' => 3400.00,
+                'stock' => 5,
+                'gemstone_type' => 'Tourmaline',
+                'images' => ['images/pink_gemstone_hero.png'],
+                'is_featured' => false,
+                'product_type' => 'gem',
+                'color' => 'Pink',
+                'weight' => 3.8,
+                'shape' => 'Oval',
+                'treatment' => 'None',
+                'original_price' => 3800.00,
+            ]
+        );
 
-        Product::create([
-            'category_id' => $gemCat->id,
-            'name' => 'Imperial Topaz',
-            'slug' => 'imperial-topaz-loose',
-            'description' => 'Golden-orange hue characteristic of the finest Imperial Topaz.',
-            'price' => 5600.00,
-            'stock' => 2,
-            'gemstone_type' => 'Topaz',
-            'images' => ['images/cavarigem.png'],
-            'is_featured' => false,
-            'product_type' => 'gem',
-            'color' => 'Orange',
-            'weight' => 2.4,
-            'shape' => 'Peardrop',
-            'treatment' => 'Irradiated',
-        ]);
+        Product::updateOrCreate(
+            ['slug' => 'imperial-topaz-loose'],
+            [
+                'category_id' => $gemCat->id,
+                'name' => 'Imperial Topaz',
+                'description' => 'Golden-orange hue characteristic of the finest Imperial Topaz.',
+                'price' => 5600.00,
+                'stock' => 2,
+                'gemstone_type' => 'Topaz',
+                'images' => ['images/cavarigem.png'],
+                'is_featured' => false,
+                'product_type' => 'gem',
+                'color' => 'Orange',
+                'weight' => 2.4,
+                'shape' => 'Peardrop',
+                'treatment' => 'Irradiated',
+            ]
+        );
         
-        Product::create([
-            'category_id' => $gemCat->id,
-            'name' => 'Aquamarine Crystal',
-            'slug' => 'aquamarine-crystal-loose',
-            'description' => 'Sea-blue aquamarine with exceptional clarity.',
-            'price' => 2100.00,
-            'stock' => 3,
-            'gemstone_type' => 'Aquamarine',
-            'images' => ['images/hero-gem.png'],
-            'is_featured' => false,
-            'product_type' => 'gem',
-            'color' => 'Blue',
-            'weight' => 5.2,
-            'shape' => 'Round',
-            'treatment' => 'None',
-        ]);
+        Product::updateOrCreate(
+            ['slug' => 'aquamarine-crystal-loose'],
+            [
+                'category_id' => $gemCat->id,
+                'name' => 'Aquamarine Crystal',
+                'description' => 'Sea-blue aquamarine with exceptional clarity.',
+                'price' => 2100.00,
+                'stock' => 3,
+                'gemstone_type' => 'Aquamarine',
+                'images' => ['images/hero-gem.png'],
+                'is_featured' => false,
+                'product_type' => 'gem',
+                'color' => 'Blue',
+                'weight' => 5.2,
+                'shape' => 'Round',
+                'treatment' => 'None',
+            ]
+        );
 
-        Product::create([
-            'category_id' => $gemCat->id,
-            'name' => 'Grand Emerald',
-            'slug' => 'grand-emerald-hero',
-            'description' => 'A monolithic emerald piece, suitable for a museum or a grand centerpiece.',
-            'price' => 45000.00,
-            'stock' => 1,
-            'gemstone_type' => 'Emerald',
-            'images' => ['images/hero_emerald.png'],
-            'is_featured' => true,
-            'product_type' => 'gem',
-            'color' => 'Green',
-            'weight' => 12.5,
-            'shape' => 'Emerald',
-            'treatment' => 'Oil Treated',
-        ]);
+        Product::updateOrCreate(
+            ['slug' => 'grand-emerald-hero'],
+            [
+                'category_id' => $gemCat->id,
+                'name' => 'Grand Emerald',
+                'description' => 'A monolithic emerald piece, suitable for a museum or a grand centerpiece.',
+                'price' => 45000.00,
+                'stock' => 1,
+                'gemstone_type' => 'Emerald',
+                'images' => ['images/hero_emerald.png'],
+                'is_featured' => true,
+                'product_type' => 'gem',
+                'color' => 'Green',
+                'weight' => 12.5,
+                'shape' => 'Emerald',
+                'treatment' => 'Oil Treated',
+            ]
+        );
     }
 }
