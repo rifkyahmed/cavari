@@ -2,11 +2,10 @@
 .phpunit.result.cache
 
 
-/public/build
-/public/hot
+/public/node_modules
 /public/storage
 /storage/*.key
-
+/vendor
 .env*
 Homestead.json
 Homestead.yaml
