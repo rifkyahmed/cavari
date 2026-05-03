@@ -13,6 +13,35 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
+// Temporary route to fix storage link on hosting server
+Route::get('/fix-storage', function () {
+    try {
+        $target = storage_path('app/public');
+        $shortcut = public_path('storage');
+        
+        if (file_exists($shortcut)) {
+            if (is_link($shortcut)) {
+                return "Storage link already exists and is a symlink. If images still don't show, check your .env APP_URL.";
+            } else {
+                // It's a directory, move it
+                rename($shortcut, $shortcut . '_backup_' . time());
+            }
+        }
+        
+        app('files')->link($target, $shortcut);
+        
+        // Clear caches
+        \Illuminate\Support\Facades\Artisan::call('cache:clear');
+        \Illuminate\Support\Facades\Artisan::call('config:clear');
+        \Illuminate\Support\Facades\Artisan::call('view:clear');
+        \Illuminate\Support\Facades\Artisan::call('route:clear');
+
+        return "Storage link created and caches cleared! Please update your .env APP_URL to match your domain (e.g. https://yourdomain.com).";
+    } catch (\Exception $e) {
+        return "Error: " . $e->getMessage();
+    }
+});
+
 // Live exchange rates (cached 1 h, no auth required)
 Route::get('/api/exchange-rates', [\App\Http\Controllers\ExchangeRateController::class, 'rates'])->name('api.exchange-rates');
 
