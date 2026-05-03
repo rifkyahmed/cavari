@@ -42,12 +42,35 @@ Route::get('/fix-storage', function () {
     $target = storage_path('app/public');
     $shortcut = public_path('storage');
 
+    echo "<h1>Storage Fix</h1>";
+
+    if (!function_exists('symlink')) {
+        echo "<p style='color:red;'>ERROR: The 'symlink' function is DISABLED on this server. I will try a fallback method.</p>";
+    }
+
     if (file_exists($shortcut)) {
+        echo "<p>Removing old shortcut...</p>";
         @unlink($shortcut);
     }
-    @symlink($target, $shortcut);
 
-    return "Storage Link Repaired. <a href='/'>Go to Home</a>";
+    try {
+        app('files')->link($target, $shortcut);
+        echo "<p style='color:green;'>SUCCESS: Storage link created!</p>";
+    } catch (\Exception $e) {
+        echo "<p style='color:red;'>FAILED: " . $e->getMessage() . "</p>";
+        echo "<p>Attempting manual symlink...</p>";
+        if (@symlink($target, $shortcut)) {
+            echo "<p style='color:green;'>SUCCESS: Manual symlink worked!</p>";
+        } else {
+            echo "<p style='color:red;'>ERROR: Manual symlink failed. Please contact Hostinger support to enable 'symlink'.</p>";
+        }
+    }
+
+    \Illuminate\Support\Facades\Artisan::call('cache:clear');
+    \Illuminate\Support\Facades\Artisan::call('config:clear');
+    echo "<p>Caches cleared. Dashboard should update now.</p>";
+
+    return "<br><a href='/'>Go to Home</a>";
 });
 
 // Live exchange rates (cached 1 h, no auth required)
