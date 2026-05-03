@@ -15,13 +15,27 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 
 // Temporary route to fix storage link on hosting server
 Route::get('/force-up', function() {
+    // 1. Try standard Artisan commands
     \Illuminate\Support\Facades\Artisan::call('up');
     \Illuminate\Support\Facades\Artisan::call('migrate', ['--force' => true]);
+    
+    // 2. Manual file deletion (Fallback)
+    $files = [
+        storage_path('framework/maintenance.php'),
+        storage_path('framework/down'),
+    ];
+    foreach ($files as $file) {
+        if (file_exists($file)) {
+            unlink($file);
+        }
+    }
+
     \Illuminate\Support\Facades\Artisan::call('config:clear');
     \Illuminate\Support\Facades\Artisan::call('route:clear');
     \Illuminate\Support\Facades\Artisan::call('cache:clear');
     \Illuminate\Support\Facades\Artisan::call('view:clear');
-    return "Database Migrated & Application LIVE. <a href='/'>Go to Home</a>";
+
+    return "Deep Clean Complete. Application is LIVE. <a href='/'>Go to Home</a>";
 });
 
 Route::get('/fix-storage', function () {
