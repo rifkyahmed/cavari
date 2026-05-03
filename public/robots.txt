@@ -11,4 +11,4 @@ Allow: /api/
 Allow: /products/
 Allow: /images/
 
-Sitemap: https://cavari.com/sitemap.xml
+Sitemap: https://cavarigems.com/sitemap.xml
