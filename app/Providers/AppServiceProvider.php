@@ -19,8 +19,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        // Allow /force-up to bypass maintenance mode
-        if (request()->is('force-up')) {
+        // Allow recovery routes to bypass maintenance mode
+        if (request()->is('force-up') || request()->is('fix-storage')) {
             config(['app.maintenance' => null]);
         }
     }
