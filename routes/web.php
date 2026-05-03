@@ -19,24 +19,38 @@ Route::get('/fix-storage', function () {
         $target = storage_path('app/public');
         $shortcut = public_path('storage');
         
+        $results = [];
+        $results[] = "Target: " . $target;
+        $results[] = "Shortcut: " . $shortcut;
+        $results[] = "Target exists: " . (file_exists($target) ? 'Yes' : 'No');
+        
+        // Count files in products/images
+        if (file_exists($target . '/products/images')) {
+            $files = scandir($target . '/products/images');
+            $results[] = "Image files found on server: " . (count($files) - 2);
+        } else {
+            $results[] = "Warning: products/images directory not found in storage!";
+        }
+
         if (file_exists($shortcut)) {
             if (is_link($shortcut)) {
-                return "Storage link already exists and is a symlink. If images still don't show, check your .env APP_URL.";
+                $results[] = "Storage link already exists and is a symlink.";
             } else {
-                // It's a directory, move it
+                $results[] = "Shortcut exists but is a DIRECTORY. Moving it to backup.";
                 rename($shortcut, $shortcut . '_backup_' . time());
+                app('files')->link($target, $shortcut);
+                $results[] = "New symlink created.";
             }
+        } else {
+            app('files')->link($target, $shortcut);
+            $results[] = "Symlink created.";
         }
         
-        app('files')->link($target, $shortcut);
-        
-        // Clear caches
         \Illuminate\Support\Facades\Artisan::call('cache:clear');
         \Illuminate\Support\Facades\Artisan::call('config:clear');
-        \Illuminate\Support\Facades\Artisan::call('view:clear');
-        \Illuminate\Support\Facades\Artisan::call('route:clear');
+        $results[] = "Caches cleared.";
 
-        return "Storage link created and caches cleared! Please update your .env APP_URL to match your domain (e.g. https://yourdomain.com).";
+        return implode("<br>", $results) . "<br><br><b>Please refresh your page. If images still don't show, you likely need to upload your 'storage/app/public/products' folder from your computer to the server using FTP/File Manager.</b>";
     } catch (\Exception $e) {
         return "Error: " . $e->getMessage();
     }
