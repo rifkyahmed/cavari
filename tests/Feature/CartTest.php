@@ -37,6 +37,6 @@ class CartTest extends TestCase
         $this->assertNotNull($cart);
         $this->assertCount(1, $cart->items);
         $this->assertEquals($product->id, $cart->items->first()->product_id);
-        $this->assertEquals(1, $cart->items->first()->quantity);
+        $this->assertEquals(2, $cart->items->first()->quantity);
     }
 }

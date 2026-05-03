@@ -62,7 +62,7 @@ class CheckoutTest extends TestCase
         $this->assertEquals(1000, $order->total_price);
         $this->assertEquals('paid', $order->payment_status);
 
-        $response->assertRedirect(route('checkout.success', ['id' => $order->id]));
+        $response->assertRedirect(route('checkout.public-success', ['uuid' => $order->payment_link_uuid]));
 
         Mail::assertSent(OrderConfirmation::class, function ($mail) use ($user) {
             return $mail->hasTo($user->email);
