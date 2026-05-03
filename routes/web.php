@@ -14,6 +14,13 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
 // Temporary route to fix storage link on hosting server
+Route::get('/force-up', function() {
+    \Illuminate\Support\Facades\Artisan::call('up');
+    \Illuminate\Support\Facades\Artisan::call('cache:clear');
+    \Illuminate\Support\Facades\Artisan::call('view:clear');
+    return "Application is now LIVE. <a href='/'>Go to Home</a>";
+});
+
 Route::get('/fix-storage', function () {
     $target = storage_path('app/public');
     $shortcut = public_path('storage');
