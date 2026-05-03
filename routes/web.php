@@ -15,45 +15,36 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 
 // Temporary route to fix storage link on hosting server
 Route::get('/fix-storage', function () {
-    try {
-        $target = storage_path('app/public');
-        $shortcut = public_path('storage');
-        
-        $results = [];
-        $results[] = "Target: " . $target;
-        $results[] = "Shortcut: " . $shortcut;
-        $results[] = "Target exists: " . (file_exists($target) ? 'Yes' : 'No');
-        
-        // Count files in products/images
-        if (file_exists($target . '/products/images')) {
-            $files = scandir($target . '/products/images');
-            $results[] = "Image files found on server: " . (count($files) - 2);
-        } else {
-            $results[] = "Warning: products/images directory not found in storage!";
-        }
-
-        if (file_exists($shortcut)) {
-            if (is_link($shortcut)) {
-                $results[] = "Storage link already exists and is a symlink.";
-            } else {
-                $results[] = "Shortcut exists but is a DIRECTORY. Moving it to backup.";
-                rename($shortcut, $shortcut . '_backup_' . time());
-                app('files')->link($target, $shortcut);
-                $results[] = "New symlink created.";
-            }
-        } else {
-            app('files')->link($target, $shortcut);
-            $results[] = "Symlink created.";
-        }
-        
-        \Illuminate\Support\Facades\Artisan::call('cache:clear');
-        \Illuminate\Support\Facades\Artisan::call('config:clear');
-        $results[] = "Caches cleared.";
-
-        return implode("<br>", $results) . "<br><br><b>Please refresh your page. If images still don't show, you likely need to upload your 'storage/app/public/products' folder from your computer to the server using FTP/File Manager.</b>";
-    } catch (\Exception $e) {
-        return "Error: " . $e->getMessage();
+    $target = storage_path('app/public');
+    $shortcut = public_path('storage');
+    
+    echo "<html><body style='font-family:sans-serif; padding:20px;'>";
+    echo "<h1>Deployment Diagnostics</h1>";
+    echo "<b>1. Storage Path:</b> " . $target . "<br>";
+    echo "<b>2. Public Path:</b> " . $shortcut . "<br>";
+    echo "<b>3. Target exists:</b> " . (file_exists($target) ? 'Yes' : 'No') . "<br>";
+    
+    $imageCount = 0;
+    if (file_exists($target . '/products/images')) {
+        $files = scandir($target . '/products/images');
+        $imageCount = count($files) - 2;
     }
+    echo "<b>4. Images found in storage:</b> " . $imageCount . "<br>";
+
+    if (!file_exists($shortcut)) {
+        try {
+            app('files')->link($target, $shortcut);
+            echo "<b>5. Result:</b> Created new symlink.<br>";
+        } catch (\Exception $e) {
+            echo "<b>5. Result:</b> Error creating link: " . $e->getMessage() . "<br>";
+        }
+    } else {
+        echo "<b>5. Result:</b> Shortcut already exists.<br>";
+    }
+    
+    echo "<br><br><i>If 'Images found' is 0, you must upload the images from your computer to Hostinger manually using File Manager.</i>";
+    echo "</body></html>";
+    exit;
 });
 
 // Live exchange rates (cached 1 h, no auth required)
