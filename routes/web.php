@@ -38,6 +38,17 @@ Route::get('/force-up', function() {
     return "Deep Clean Complete. Application is LIVE. <a href='/'>Go to Home</a>";
 });
 
+// Image Proxy for when symlink is disabled
+Route::get('/storage/{path}', function ($path) {
+    $fullPath = storage_path('app/public/' . $path);
+    if (!file_exists($fullPath)) {
+        abort(404);
+    }
+    $file = file_get_contents($fullPath);
+    $type = mime_content_type($fullPath);
+    return response($file)->header('Content-Type', $type);
+})->where('path', '.*');
+
 Route::get('/fix-storage', function () {
     $target = storage_path('app/public');
     $shortcut = public_path('storage');
