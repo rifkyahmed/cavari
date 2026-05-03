@@ -29,9 +29,9 @@ class StandardPurchaseFlowTest extends DuskTestCase
                     ->visitRoute('products.index')
                     ->waitForText('Midnight Star', 10) 
                     ->click('a[href*="midnight-star"]')
-                    ->waitForText('ADD TO CART')
-                    ->click('button[onclick*="addToCart"]') // More robust than press() for this custom styled button
-                    ->pause(2000) 
+                    ->waitForText('ADD TO CART', 10)
+                    ->click('button#add-to-cart-btn, button[onclick*="addToCart"]')
+                    ->waitForText('added to cart', 10)
                     ->visitRoute('cart.index')
                     ->waitForText('Midnight Star')
                     ->clickLink('Secure Checkout')
@@ -59,7 +59,7 @@ class StandardPurchaseFlowTest extends DuskTestCase
                     ->type('email', $user->email)
                     ->type('password', 'password')
                     ->click('#login-form button[type="submit"]') 
-                    ->pause(2000) 
+                    ->waitUntilMissing('#login-form button[type="submit"]', 10) 
                     ->assertAuthenticatedAs($user);
         });
     }
