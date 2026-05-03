@@ -41,34 +41,13 @@ Route::get('/force-up', function() {
 Route::get('/fix-storage', function () {
     $target = storage_path('app/public');
     $shortcut = public_path('storage');
-    
-    echo "<html><body style='font-family:sans-serif; padding:20px;'>";
-    echo "<h1>Deployment Diagnostics</h1>";
-    echo "<b>1. Storage Path:</b> " . $target . "<br>";
-    echo "<b>2. Public Path:</b> " . $shortcut . "<br>";
-    echo "<b>3. Target exists:</b> " . (file_exists($target) ? 'Yes' : 'No') . "<br>";
-    
-    $imageCount = 0;
-    if (file_exists($target . '/products/images')) {
-        $files = scandir($target . '/products/images');
-        $imageCount = count($files) - 2;
-    }
-    echo "<b>4. Images found in storage:</b> " . $imageCount . "<br>";
 
-    if (!file_exists($shortcut)) {
-        try {
-            app('files')->link($target, $shortcut);
-            echo "<b>5. Result:</b> Created new symlink.<br>";
-        } catch (\Exception $e) {
-            echo "<b>5. Result:</b> Error creating link: " . $e->getMessage() . "<br>";
-        }
-    } else {
-        echo "<b>5. Result:</b> Shortcut already exists.<br>";
+    if (file_exists($shortcut)) {
+        @unlink($shortcut);
     }
-    
-    echo "<br><br><i>If 'Images found' is 0, you must upload the images from your computer to Hostinger manually using File Manager.</i>";
-    echo "</body></html>";
-    exit;
+    @symlink($target, $shortcut);
+
+    return "Storage Link Repaired. <a href='/'>Go to Home</a>";
 });
 
 // Live exchange rates (cached 1 h, no auth required)
