@@ -23,8 +23,7 @@ class CartTest extends TestCase
             'slug' => 'sapphire-stone-'.rand(100,999), // unique slug
             'description' => 'A beautifully cut sapphire.',
             'price' => 1200,
-            'stock_quantity' => 10,
-            'is_active' => true,
+            'stock' => 10,
         ]);
 
         $response = $this->actingAs($user)->post(route('cart.store'), [

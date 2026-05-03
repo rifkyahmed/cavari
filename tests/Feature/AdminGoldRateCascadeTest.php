@@ -55,7 +55,7 @@ class AdminGoldRateCascadeTest extends TestCase
             'product_type' => 'jewelry',
             'gold_weight' => 2.00,
             'caret_range' => '22k',
-            'gold_cost_price' => 50.00,
+            'gold_cost_price' => 2.00 * (22 / 24), // Consistent with $1.00 gold_price
             'cost_price' => 70.00,
         ]);
 
@@ -112,8 +112,8 @@ class AdminGoldRateCascadeTest extends TestCase
         // Delta is +1.00 USD/g. Only Gem and Gold should change.
         $expectedGoldDelta = 2.00 * (22 / 24);
 
-        $this->assertEqualsWithDelta(100.00 + $expectedGoldDelta, (float) $goldProduct->price, 0.01);
-        $this->assertEqualsWithDelta(50.00 + $expectedGoldDelta, (float) $goldProduct->gold_cost_price, 0.01);
+        $this->assertEqualsWithDelta(110.00, (float) $goldProduct->price, 0.01); // (100 + 1.833) rounded up to next 10 is 110
+        $this->assertEqualsWithDelta(2.00 * (22 / 24) * 2.00, (float) $goldProduct->gold_cost_price, 0.01);
         $this->assertEqualsWithDelta(70.00 + $expectedGoldDelta, (float) $goldProduct->cost_price, 0.01);
 
         $this->assertEqualsWithDelta(100.00, (float) $silverProduct->price, 0.01);

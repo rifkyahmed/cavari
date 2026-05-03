@@ -35,8 +35,7 @@ class CheckoutTest extends TestCase
             'slug' => 'gold-chain-'.rand(100,999),
             'description' => 'A beautifully designed gold chain.',
             'price' => 500,
-            'stock_quantity' => 10,
-            'is_active' => true,
+            'stock' => 10,
         ]);
 
         $cart = [
