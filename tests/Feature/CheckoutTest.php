@@ -54,6 +54,7 @@ class CheckoutTest extends TestCase
                 'billing_zip' => '10001',
                 'billing_country' => 'USA',
                 'shipping_same_as_billing' => 'on',
+                'payment_method' => 'stripe',
             ]);
 
         $order = \App\Models\Order::where('user_id', $user->id)->first();

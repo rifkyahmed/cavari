@@ -51,7 +51,7 @@ class CartController extends Controller
             }
             $cart[$product->id] = [
                 'name' => $product->name,
-                'quantity' => 1,
+                'quantity' => (int) ($request->quantity ?? 1),
                 'price' => $product->price,
                 'image' => $product->images[0] ?? null
             ];
@@ -61,7 +61,7 @@ class CartController extends Controller
                 $userCart = \App\Models\Cart::firstOrCreate(['user_id' => auth()->id()]);
                 $userCart->items()->updateOrCreate(
                     ['product_id' => $product->id],
-                    ['quantity' => 1]
+            ['quantity' => (int) ($request->quantity ?? 1)]
                 );
             }
         }

@@ -23,6 +23,7 @@ class Order extends Model
         'discount',
         'order_ip_address',
         'coinbase_charge_id',
+        'is_custom',
     ];
 
 
