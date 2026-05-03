@@ -59,7 +59,7 @@ jobs:
       run: php artisan test
 
     - name: Upgrade Chrome Driver
-      run: php artisan dusk:chrome-driver
+      run: php artisan dusk:chrome-driver --detect
 
     - name: Run Laravel Dusk Browser Tests
       run: |
