@@ -5,9 +5,6 @@
     RewriteCond %{HTTPS} off
     RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
-    # Direct storage requests to the public storage link
-    RewriteRule ^storage/(.*)$ public/storage/$1 [L]
-
     # Redirect everything to the public folder
     RewriteRule ^$ public/index.php [L]
     RewriteRule ^((?!public/).*)$ public/$1 [L]
