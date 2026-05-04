@@ -6,8 +6,9 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 <meta name="google-site-verification" content="0gfxPnkgGArjdF7fCzg1fkUZ4VvT6ZD7HO5M5VW1ryU" />
     <link rel="icon" type="image/png" href="{{ asset('images/cavarilogo.png') }}">
-    <title>@yield('title', config('app.name', 'Cavari')) @if(!View::hasSection('title')) | Cavari Gems & Jewelry @endif</title>
-    <meta name="description" content="@yield('meta_description', 'Discover exquisite 18k gold diamond rings at Cavari. Handcrafted gems and luxury jewelry perfect for engagements and special occasions.')">
+    <title>@yield('title', 'Cavari | Luxury Gems & Bespoke Jewelry')</title>
+    <meta name="description" content="@yield('meta_description', 'Cavari offers exquisite 18k gold diamond rings, handcrafted gems, and luxury jewelry. Discover rare treasures perfect for engagements and collectors.')">
+    <meta name="keywords" content="Cavari, Cavari Gems, Luxury Jewelry, Sri Lanka Gems, Bespoke Jewelry, Diamond Rings, Rare Gemstones">
     <meta name="robots" content="@yield('meta_robots', 'index, follow')">
     <link rel="canonical" href="@yield('canonical_url', url()->current())">
 
@@ -34,11 +35,20 @@
       "@context": "https://schema.org",
       "@type": "Organization",
       "name": "Cavari",
+      "alternateName": "Cavari Gems",
       "url": "{{ url('/') }}",
-      "logo": "{{ asset('images/logo.png') }}",
-      "description": "Exquisite gems and luxury jewelry perfect for every occasion.",
+      "logo": "{{ asset('images/cavarilogo.png') }}",
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "telephone": "+94-77-123-4567",
+        "contactType": "customer service",
+        "areaServed": "Worldwide",
+        "availableLanguage": ["English", "Sinhala"]
+      },
+      "description": "Cavari is a luxury jewelry brand specializing in ethically sourced rare gemstones and bespoke handcrafted 18k gold jewelry from Sri Lanka.",
       "sameAs": [
         "https://www.instagram.com/cavari",
+        "https://www.facebook.com/cavari",
         "https://www.pinterest.com/cavari"
       ]
     }

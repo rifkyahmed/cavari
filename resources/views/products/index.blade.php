@@ -6,8 +6,9 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="icon" type="image/png" href="{{ asset('images/cavarilogo.png') }}">
 
-    <title>Shop | {{ config('app.name', 'Cavari') }}</title>
-    <meta name="description" content="Shop the finest collection of authentic gemstones and bespoke luxury jewelry at Cavari. Discover perfectly cut rubies, sapphires, emeralds, and diamond rings.">
+    <title>Shop Luxury Gems & Jewelry | Cavari</title>
+    <meta name="description" content="Explore the Cavari collection. Shop for the finest loose gemstones, 18k gold diamond rings, and bespoke luxury jewelry handcrafted for collectors.">
+    <meta name="keywords" content="Cavari Shop, Cavari Gems, Buy Gemstones Online, Luxury Jewelry Shop, Diamond Rings Cavari, Sri Lanka Sapphires">
     <meta name="robots" content="index, follow">
     <link rel="canonical" href="{{ url()->current() }}">
 

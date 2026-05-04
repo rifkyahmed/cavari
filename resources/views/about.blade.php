@@ -7,7 +7,9 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="icon" type="image/png" href="{{ asset('images/cavarilogo.png') }}">
 
-    <title>The Heritage | {{ config('app.name', 'Cavari') }}</title>
+    <title>The Heritage | Cavari | Luxury Gems & Jewelry</title>
+    <meta name="description" content="Discover the heritage of Cavari. Learn about our ethically sourced gemstones and world-class jewelry craftsmanship from the heart of Sri Lanka.">
+    <meta name="keywords" content="Cavari, Cavari Heritage, Ethical Gemstones, Ratnapura Gems, Sri Lanka Jewelry, Luxury Jewelry Artisan">
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">

@@ -6,7 +6,9 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="icon" type="image/png" href="{{ asset('images/cavarilogo.png') }}">
 
-    <title>Contact | {{ config('app.name', 'Cavari') }}</title>
+    <title>Contact Us | Cavari Luxury Gems & Jewelry</title>
+    <meta name="description" content="Get in touch with Cavari. Start a conversation about our rare gemstones, bespoke jewelry creations, or visit our atelier in Ratnapura, Sri Lanka.">
+    <meta name="keywords" content="Cavari Contact, Bespoke Jewelry Inquiry, Gemstone Concierge, Cavari Sri Lanka, Jewelry Support">
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">

@@ -8,9 +8,10 @@
     <link rel="icon" type="image/png" href="{{ asset('images/cavarilogo.png') }}">
     <meta name="google-site-verification" content="0gfxPnkgGArjdF7fCzg1fkUZ4VvT6ZD7HO5M5VW1ryU" />
 
-    <title>{{ config('app.name', 'Cavari') }} | Exquisite Gems & Luxury Jewelry</title>
+    <title>Cavari | Exquisite Gems & Luxury Jewelry</title>
     <meta name="description"
-        content="Discover exquisite 18k gold diamond rings, sapphires, emeralds and bespoke luxury jewelry at Cavari. Handcrafted gems perfect for engagements and collectors.">
+        content="Cavari is your premier destination for exquisite 18k gold diamond rings, sapphires, emeralds, and bespoke luxury jewelry. Handcrafted gems perfect for discerning collectors.">
+    <meta name="keywords" content="Cavari, Cavari Gems, Cavari Jewelry, Luxury Gemstones, Sri Lanka Sapphires, Bespoke Jewelry, Diamond Rings">
     <meta name="robots" content="index, follow">
     <link rel="canonical" href="{{ url()->current() }}">
 

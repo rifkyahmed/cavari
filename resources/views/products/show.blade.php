@@ -7,9 +7,10 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="icon" type="image/png" href="{{ asset('images/cavarilogo.png') }}">
 
-    <title>{{ $product->name }} | {{ config('app.name', 'Cavari') }}</title>
+    <title>{{ $product->name }} | Cavari Luxury Gems & Jewelry</title>
     <meta name="description"
-        content="Buy {{ $product->name }}, an authentic {{ $product->gemstone_type ?? 'gemstone' }} piece from Cavari. {{ Str::limit(strip_tags($product->description), 120) }}">
+        content="Buy {{ $product->name }} at Cavari. An exquisite, authentic {{ $product->gemstone_type ?? 'gemstone' }} piece. Discover luxury jewelry and handcrafted gems.">
+    <meta name="keywords" content="Cavari {{ $product->name }}, {{ $product->gemstone_type }}, Luxury Jewelry, Bespoke Gemstones, Cavari Gems">
     <meta name="robots" content="index, follow">
     <link rel="canonical" href="{{ url()->current() }}">
 
